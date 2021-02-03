@@ -24,4 +24,11 @@ public class Player {
     public void setMoney(int money) {
         this.money = money;
     }
+
+    public int petWorth (int i){
+        ownedPets.get(i).getTotalWorth(); // Behöver fixas, ska returna värdet av djuret
+
+    }
+
+
 }

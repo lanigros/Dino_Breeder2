@@ -5,8 +5,12 @@ abstract class Food {
      int cost;
      int kg;
 
-    public Food (int cost, int kg){
-
+    public Food (int kg){
+    this.kg=kg;
+    }
+    public int getTotalCost(){
+        int sum = cost * kg;
+        return sum;
 
     }
 
@@ -14,28 +18,27 @@ abstract class Food {
 
 class Meat extends Food{
 
-    public Meat(int cost, int kg) {
-        super(cost, kg);
+    public Meat(int kg) {
+        super(kg);
         this.cost=100;
-        this.kg=kg;
-
     }
 }
 class Veggies extends Food {
 
-    public Veggies(int cost, int kg) {
-        super(cost, kg);
+    public Veggies(int kg) {
+        super(kg);
         this.cost=50;
-        this.kg=kg;
     }
 }
 class Fish extends Food {
 
-    public Fish(int cost, int kg) {
-        super(cost, kg);
+    public Fish(int kg) {
+        super(kg);
         this.cost=25;
-        this.kg=kg;
     }
 }
+
+
+
 
 
