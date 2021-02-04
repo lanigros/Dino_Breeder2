@@ -25,10 +25,21 @@ public class Player {
         this.money = money;
     }
 
-    public int petWorth (int i){
-        ownedPets.get(i).getTotalWorth(); // Behöver fixas, ska returna värdet av djuret
-
+    public void removeFood(int index){
+        System.out.println(ownedFood.get(index) + " was removed.");
+        ownedFood.remove(index);
     }
 
+    public int petWorth (int i){
+        ownedPets.get(i).getTotalWorth();
 
+    } // Behöver fixas, ska returna värdet av djuret
+
+    public ArrayList<Animal> getOwnedPets() {
+        return ownedPets;
+    }
+
+    public void setOwnedPets(ArrayList<Animal> ownedPets) {
+        this.ownedPets = ownedPets;
+    }
 }

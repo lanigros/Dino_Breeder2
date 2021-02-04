@@ -18,7 +18,6 @@ public class Game {
     }
 
 
-
     public void banner() {
         System.out.println("+--------------------------+");
         System.out.println("|       DINO BREEDER       |");
@@ -29,12 +28,12 @@ public class Game {
     public void roundsAndPlayers() {
         Scanner input = new Scanner(System.in);
 
-            System.out.println("\nEnter how many rounds you want to play.");
-            int rounds = input.nextInt();
-            if (rounds < 5 || rounds > 30) {
-                System.out.println("Wrong amount of rounds! 5-30!");
-            }
-         else{
+        System.out.println("\nEnter how many rounds you want to play.");
+        int rounds = input.nextInt();
+        if (rounds < 5 || rounds > 30) {
+            System.out.println("Wrong amount of rounds! 5-30!");
+            return;
+        } else {
             amountOfRounds = rounds;
         }
 
@@ -42,13 +41,13 @@ public class Game {
         int players = input.nextInt();
         if (players < 1 || players > 4) {
             System.out.println("Wrong amount of players! 1-4");
+            return;
 
         } else {
 
-            for (int i = 0; i < amountOfPlayers ; i++){
-                System.out.println("Name player " + (i+1) );
+            for (int i = 0; i < amountOfPlayers; i++) {
+                System.out.println("Name player " + (i + 1));
                 String playerNames = input.nextLine();
-
 
                 playerList.add((new Player(playerNames)));
 

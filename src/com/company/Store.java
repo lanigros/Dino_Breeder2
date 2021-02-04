@@ -19,20 +19,30 @@ public class Store {
         switch (menuChoice) {
             case 1:
                 getListAllDinos();
-                buyAnimalsMenuChoice();
+                buyAnimalsMenuChoice(player);
                 break;
             case 2:
-                sellAnimalsMenuChoice();
+                sellAnimalsMenuChoice(player);
 
             case 3:
                 getListAllFood();
-                buyFoodMenuChoice();
+                buyFoodMenuChoice(player);
 
             case 4:
+                feedAnimalMenuChoice(player);
+
+            case 5:
 
 
         }
     }
+
+    /**
+     *
+     * @param player buyAnimalMenuChoice give you the option to buy animals and subtract the cost
+     *               from the players wallet. It also give you the option to set a name and gender
+     *               for your pet.
+     */
 
 
     public void buyAnimalsMenuChoice(Player player) {
@@ -128,7 +138,7 @@ public class Store {
 
 
     /**
-     * @param player sellAnimalMenuChoice is showing you your full list of owned animals and give you the option
+     * @param player sellAnimalMenuChoice is showing your full list of owned animals and give you the option
      *               to choose freely amongst them. It will remove the chosen pet from your petlist and then add
      *               the money it originally cost times the health to your wallet.
      */
@@ -143,16 +153,50 @@ public class Store {
         player.setMoney(player.getMoney() + player.petWorth(i));
         player.ownedPets.remove(i);
     }
-    //Fixa en metod som tar in värdet av djuret som är aktuellt
-    // Av indexet som väljs av användaren så ska man få fram vilket djur (Done)
-    // och även då få fram vilket värde den har gånger hälsovärdet.
 
+    /**
+     *
+     * @param player
+     * feedAnimalMenuChoice is showing you your list of foods and pets.
+     * you then have to choose the right food and the right pet.
+     * Depending on the animals diet it could either be denied or accepted and replenish health.
+     * (!Needs to be looked over!)
+     */
 
     public void feedAnimalMenuChoice(Player player) {
         Scanner input = new Scanner(System.in);
         System.out.println("Which animal would you like to feed?");
         getListPlayerPets(player);
-        int animalToFeed = input.nextInt() +1;
+        int animalIndex = input.nextInt();
+        player.ownedPets.get(animalIndex +1);
+        getListPlayerFood(player);
+        int foodIndex = input.nextInt();
+        player.ownedFood.get(foodIndex +1);
+
+        dietChecker(player.ownedFood.get(foodIndex), player.ownedPets.get(animalIndex));
+        player.removeFood(foodIndex);
+
+    }
+
+    public void breedAnimalMenuChoice(Player player){
+        Scanner input = new Scanner(System.in);
+        getListPlayerPets(player);
+        System.out.println("Choose your first pet.");
+        int dino1=input.nextInt();
+        System.out.println("Choose your second pet.");
+        int dino2= input.nextInt();
+        breederCheck();
+
+    }
+
+
+    public boolean breederCheck(Animal dino1, Animal dino2){
+        if(!(dino1.gender == dino2.gender) ){
+            if(dino1 == dino2){
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -181,5 +225,17 @@ public class Store {
             System.out.println(i + 1 + ". " + player.ownedFood.get(i));
         }
     }
+
+    public void dietChecker (Food food, Animal dino){
+        if (!food.equals(dino.diet)){
+            System.out.println("I don't eat that!");
+            return;
+        }
+        dino.replenishHealth();
+
+
+
+    }
+
 
 }
