@@ -56,3 +56,6 @@ public class Game {
 
     }
 }
+public void currentPlayer(){
+    playerList.get(0);
+}

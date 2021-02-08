@@ -27,16 +27,16 @@ class tRex extends Animal {
 
 }
 
-class velociraptor extends Animal {
-    public velociraptor(String name, String gender) {
+class Velociraptor extends Animal {
+    public Velociraptor(String name, String gender) {
         super(name, gender);
         this.price = 50;
         this.diet="Meat";
     }
 }
 
-class triceratops extends Animal {
-    public triceratops(String name, String gender) {
+class Triceratops extends Animal {
+    public Triceratops(String name, String gender) {
         super(name, gender);
         this.price = 100;
         this.diet="Veggies";
