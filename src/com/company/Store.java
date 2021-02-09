@@ -4,37 +4,44 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Store {
-
     String name;
 
 
     public void storeMenu(Player player) {
+
         System.out.println("-".repeat(50));
-        System.out.println("DINO STORE.");
+        System.out.println("DINO STORE." + " ".repeat(20) + player.getName() + " money: " + player.getMoney());
         System.out.println("-".repeat(50));
         System.out.println("\nWhat would you like to do?");
         System.out.println("\n".repeat(2));
-        System.out.println("1) Buy animals" + " 2) Sell animals" +
-                "\n3) Buy food" + "4) Feed animals" + "\n5) Breed animals");
+        System.out.println("1) Buy animals" + "\n2) Sell animals" +
+                "\n3) Buy food" + "\n4) Feed animals" + "\n5) Breed animals");
         Scanner input = new Scanner(System.in);
         int menuChoice = input.nextInt();
         switch (menuChoice) {
             case 1:
-                getListAllDinos();
-                buyAnimalsMenuChoice(player);
-                break;
+                    getListAllDinos();
+                    buyAnimalsMenuChoice(player);
+
+                    break;
             case 2:
                 sellAnimalsMenuChoice(player);
 
+                break;
             case 3:
                 getListAllFood();
                 buyFoodMenuChoice(player);
 
+                break;
             case 4:
                 feedAnimalMenuChoice(player);
 
+                break;
             case 5:
                 breedAnimalMenuChoice(player);
+
+                break;
+
 
         }
     }
@@ -48,11 +55,11 @@ public class Store {
 
     public void buyAnimalsMenuChoice(Player player) {
         Scanner input = new Scanner(System.in);
-        System.out.println("Enter a name for your pet:");
+        System.out.println("\nEnter a name for your pet:");
         String petName = input.nextLine();
-        System.out.println("And a gender (F/M)");
+        System.out.println("\nAnd a gender (F/M)");
         String petGender = input.nextLine();
-        System.out.println("And which Dino will you buy? (1-5)");
+        System.out.println("\nAnd which Dino will you buy? (1-5)");
         int dinoToBuy = input.nextInt();
         switch (dinoToBuy) {
             case 1:
@@ -147,7 +154,7 @@ public class Store {
         Scanner input = new Scanner(System.in);
         System.out.println("Which animal would you like to sell?");
         for (int i = 0; i < player.ownedPets.size(); i++) {
-            System.out.println(i + 1 + ". " + player.ownedPets.get(i));
+            System.out.println(i + 1 + ". " + player.ownedPets.get(i).name);
         }
         int i = input.nextInt() + 1;
 
@@ -166,14 +173,16 @@ public class Store {
         Scanner input = new Scanner(System.in);
         System.out.println("Which animal would you like to feed?");
         getListPlayerPets(player);
-        int animalIndex = input.nextInt();
-        player.ownedPets.get(animalIndex + 1);
+        int animalIndex = input.nextInt() -1;
+        player.ownedPets.get(animalIndex);
         getListPlayerFood(player);
-        int foodIndex = input.nextInt();
-        player.ownedFood.get(foodIndex + 1);
+        int foodIndex = input.nextInt() -1;
+        player.ownedFood.get(foodIndex);
 
         dietChecker(player.ownedFood.get(foodIndex), player.ownedPets.get(animalIndex));
-        player.removeFood(foodIndex);
+        Game.pressEnterToContinue();
+        player.removeFood(foodIndex); // Här måste fixas, maten raderas även om den inte är kompatibel med djuret.
+
 
     }
 
@@ -181,9 +190,9 @@ public class Store {
         Scanner input = new Scanner(System.in);
         getListPlayerPets(player);
         System.out.println("Choose your first pet.");
-        int dino1 = input.nextInt();
+        int dino1 = input.nextInt()-1;
         System.out.println("Choose your second pet.");
-        int dino2 = input.nextInt();
+        int dino2 = input.nextInt()-1;
         breederCheck(player.ownedPets.get(dino1), player.ownedPets.get(dino2));
         if (breederCheck(player.ownedPets.get(dino1), player.ownedPets.get(dino2))) {
             breederSuccess(player.ownedPets.get(dino1), player);
@@ -192,7 +201,6 @@ public class Store {
     }
 
     /**
-     *
      * @param dino1
      * @param dino2
      * @return breederCheck checks if the 2 chosen pets are compatible.
@@ -215,7 +223,6 @@ public class Store {
     }
 
     /**
-     *
      * @return randomChanceOfBreeding, generates a number between 0-100. If the
      * number is more or equals to 50, return a true value. Otherwise false.
      */
@@ -263,7 +270,6 @@ public class Store {
     }
 
     /**
-     *
      * @return A method that generates the gender, 50% male, 50% female.
      */
 
@@ -303,36 +309,33 @@ public class Store {
      */
 
     public void getListAllFood() {
-        System.out.println("1. Meat - 100$/kg" +
+        System.out.println("\n1. Meat - 100$/kg" +
                 "\n2. Vegetables - 50$/kg" +
                 "\n3. Fish - 25$/kg");
     }
 
     /**
-     *
      * @param player getListPlayerPets gives the player the list of all owned pets(Dinos)
      */
 
     public void getListPlayerPets(Player player) {
         for (int i = 0; i < player.ownedPets.size(); i++) {
-            System.out.println(i + 1 + ". " + player.ownedPets.get(i));
+            System.out.println(i + 1 + ". " + player.ownedPets.get(i).name);
         }
 
     }
 
     /**
-     *
      * @param player getListAllFood gives the player the list of all owned Foods
      */
 
     public void getListPlayerFood(Player player) {
         for (int i = 0; i < player.ownedFood.size(); i++) {
-            System.out.println(i + 1 + ". " + player.ownedFood.get(i));
+            System.out.println(i + 1 + ". " + player.ownedFood.get(i).name);
         }
     }
 
     /**
-     *
      * @param food
      * @param dino Checks if the chosen food is compatible with the chosen pets diet. If the food
      *             does not align with the pets diet, it will return a message. If the food works
@@ -340,12 +343,12 @@ public class Store {
      */
 
     public void dietChecker(Food food, Animal dino) {
-        if (!food.equals(dino.diet)) {
+        if (!(food.name.equals(dino.diet))) {
             System.out.println("I don't eat that!");
             return;
+        } else {
+            dino.replenishHealth();
         }
-        dino.replenishHealth();
-
 
     }
 

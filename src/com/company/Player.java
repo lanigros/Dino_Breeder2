@@ -26,12 +26,16 @@ public class Player {
     }
 
     public void removeFood(int index) {
-        System.out.println(ownedFood.get(index) + " was removed.");
+        System.out.println(ownedFood.get(index).name + " was removed.");
         ownedFood.remove(index);
     }
 
     public int petWorth(int i) {
         return ownedPets.get(i).getTotalWorth();
+    }
+
+    public String getName() {
+        return name;
     }
 
 }

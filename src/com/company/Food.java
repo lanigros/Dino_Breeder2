@@ -1,7 +1,7 @@
 package com.company;
 
 abstract class Food {
-
+    String name;
      int cost;
      int kg;
      int energy;
@@ -21,6 +21,7 @@ class Meat extends Food{
 
     public Meat(int kg) {
         super(kg);
+        this.name="Meat";
         this.cost=100;
         this.energy=20;
     }
@@ -29,6 +30,7 @@ class Veggies extends Food {
 
     public Veggies(int kg) {
         super(kg);
+        this.name="Veggies";
         this.cost=50;
         this.energy=20;
     }
@@ -37,9 +39,11 @@ class Fish extends Food {
 
     public Fish(int kg) {
         super(kg);
+        this.name="Fish";
         this.cost=25;
         this.energy=20;
     }
+
 }
 
 
