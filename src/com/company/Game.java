@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Game {
@@ -12,7 +13,7 @@ public class Game {
     private int totalAmountOfRounds;
     private int amountOfPlayers;
     private Store store = new Store();
-    private int currentPlayer = 0;
+    private int currentPlayer;
 
     public Game(boolean newGame) {
         this.newGame = newGame;
@@ -41,6 +42,14 @@ public class Game {
         System.out.println("+--------------------------+");
     }
 
+    public static void pressEnterToContinue() {
+        System.out.println("Press Enter key to continue...");
+        try {
+            System.in.read();
+        } catch (Exception e) {
+        }
+    }
+
     public void roundsAndPlayers() {
         Scanner input = new Scanner(System.in);
         banner();
@@ -49,7 +58,7 @@ public class Game {
         input.nextLine();
         while (rounds < 5 || rounds > 30) {
             System.out.println("Wrong amount of rounds! (5-30)");
-            return;
+            break;
         }
         totalAmountOfRounds = rounds;
 
@@ -59,7 +68,6 @@ public class Game {
         input.nextLine();
         if (players < 1 || players > 4) {
             System.out.println("Wrong amount of players! 1-4");
-            return;
 
         } else {
 
@@ -75,37 +83,40 @@ public class Game {
 
     }
 
+    public void playerListLoop() {
+        for (int j = 0; j < playerList.size(); j++) {
+            if (j == (playerList.size() - 1)) {
+                store.storeMenu(playerList.get(0));
+            } else {
+                j++;
+                System.out.println("\n Player: " + playerList.get(j).name + " is up!");
+                store.storeMenu(playerList.get(j));
+
+
+            }
+
+        }
+    }
+
     public void currentPlayer() {
-        while (newGame = true) {
-            for (int i = 0; i < totalAmountOfRounds; i++) {
-                for (int j = 0; j <= playerList.size(); j++) {
+        while (newGame) {
+            int i = 1;
+            while (i < totalAmountOfRounds) {
 
-                    System.out.println("\nRound " + (i + 1) + " Player: " + playerList.get(j).name + " is up!");
-
+                int j=0;
+                while (playerList.indexOf(j) < playerList.size() - 1) {
+                    System.out.println("\nRound " + i + " Player: " + playerList.get(j).name + " is up!");
                     store.storeMenu(playerList.get(j));
+                    playerListLoop();
+                    i++;
+
+
                 }
             }
         }
-
     }
-
-    // Tveksam eftersom den lutar sig på currentplayer som har ett fast värde på 0.
-    //Vilket känns som om den alltid kommer kalla på den som är satt som spelare 0.
-
-    private void rotatePlayers(){
-        for ( int i = 0; i > playerList.size(); i++){
-
-        }
-    }
-
-    public static void pressEnterToContinue() {
-        System.out.println("Press Enter key to continue...");
-        try {
-            System.in.read();
-        } catch (Exception e) {
-        }
-    }
-
-
 }
+
+
+
 

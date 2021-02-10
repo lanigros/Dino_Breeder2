@@ -23,7 +23,7 @@ public class Store {
                     getListAllDinos();
                     buyAnimalsMenuChoice(player);
 
-                    break;
+                break;
             case 2:
                 sellAnimalsMenuChoice(player);
 
@@ -173,10 +173,10 @@ public class Store {
         Scanner input = new Scanner(System.in);
         System.out.println("Which animal would you like to feed?");
         getListPlayerPets(player);
-        int animalIndex = input.nextInt() -1;
+        int animalIndex = input.nextInt() - 1;
         player.ownedPets.get(animalIndex);
         getListPlayerFood(player);
-        int foodIndex = input.nextInt() -1;
+        int foodIndex = input.nextInt() - 1;
         player.ownedFood.get(foodIndex);
 
         dietChecker(player.ownedFood.get(foodIndex), player.ownedPets.get(animalIndex));
@@ -190,9 +190,9 @@ public class Store {
         Scanner input = new Scanner(System.in);
         getListPlayerPets(player);
         System.out.println("Choose your first pet.");
-        int dino1 = input.nextInt()-1;
+        int dino1 = input.nextInt() - 1;
         System.out.println("Choose your second pet.");
-        int dino2 = input.nextInt()-1;
+        int dino2 = input.nextInt() - 1;
         breederCheck(player.ownedPets.get(dino1), player.ownedPets.get(dino2));
         if (breederCheck(player.ownedPets.get(dino1), player.ownedPets.get(dino2))) {
             breederSuccess(player.ownedPets.get(dino1), player);
@@ -290,9 +290,12 @@ public class Store {
 
     private boolean enoughMoney(Player player, Animal dino) {
         if (player.getMoney() > dino.getPrice()) {
+            System.out.println("\nYou just bought the pet: " + dino.name + " for " + dino.getPrice());
+            Game.pressEnterToContinue();
             return true;
         }
         System.out.println("Not enough money!");
+        Game.pressEnterToContinue();
         return false;
     }
 
@@ -351,6 +354,15 @@ public class Store {
         }
 
     }
+
+        /*public void playerShowAllItems(Player player){
+        player.getName();
+        player.getMoney();
+        getListPlayerFood(player);
+        getListPlayerPets(player); + health + hur mycket det har gått ner:
+       show food:
+
+    }*/
 
 
 }

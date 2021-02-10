@@ -23,7 +23,7 @@ class Meat extends Food{
         super(kg);
         this.name="Meat";
         this.cost=100;
-        this.energy=20;
+        this.energy=10;
     }
 }
 class Veggies extends Food {
@@ -32,7 +32,7 @@ class Veggies extends Food {
         super(kg);
         this.name="Veggies";
         this.cost=50;
-        this.energy=20;
+        this.energy=10;
     }
 }
 class Fish extends Food {
@@ -41,7 +41,7 @@ class Fish extends Food {
         super(kg);
         this.name="Fish";
         this.cost=25;
-        this.energy=20;
+        this.energy=10;
     }
 
 }
