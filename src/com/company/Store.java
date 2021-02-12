@@ -10,28 +10,25 @@ public class Store {
     public void storeMenu(Player player) {
 
         System.out.println("-".repeat(50));
-        System.out.println("DINO STORE." + " ".repeat(20) + player.getName() + " money: " + player.getMoney());
+        System.out.println(" ".repeat(20) + "DINO STORE.");
+        //System.out.println(playerShowAllItems(player));
         System.out.println("-".repeat(50));
         System.out.println("\nWhat would you like to do?");
-        System.out.println("\n".repeat(2));
+        System.out.println("\n");
         System.out.println("1) Buy animals" + "\n2) Sell animals" +
                 "\n3) Buy food" + "\n4) Feed animals" + "\n5) Breed animals");
         Scanner input = new Scanner(System.in);
         int menuChoice = input.nextInt();
         switch (menuChoice) {
             case 1:
-                    getListAllDinos();
-                    buyAnimalsMenuChoice(player);
-
+                buyAnimalsMenuChoice(player);
                 break;
             case 2:
                 sellAnimalsMenuChoice(player);
-
                 break;
             case 3:
                 getListAllFood();
                 buyFoodMenuChoice(player);
-
                 break;
             case 4:
                 feedAnimalMenuChoice(player);
@@ -54,54 +51,62 @@ public class Store {
 
 
     public void buyAnimalsMenuChoice(Player player) {
-        Scanner input = new Scanner(System.in);
-        System.out.println("\nEnter a name for your pet:");
-        String petName = input.nextLine();
-        System.out.println("\nAnd a gender (F/M)");
-        String petGender = input.nextLine();
-        System.out.println("\nAnd which Dino will you buy? (1-5)");
-        int dinoToBuy = input.nextInt();
-        switch (dinoToBuy) {
-            case 1:
+        var isRunning = true;
+        while (isRunning) {
+            getListAllDinos();
+            Scanner input = new Scanner(System.in);
+            System.out.println("\nEnter a name for your pet:");
+            String petName = input.nextLine();
+            System.out.println("\nAnd a gender (F/M)");
+            String petGender = input.nextLine();
+            System.out.println("\nAnd which Dino will you buy? (1-5)" +
+                    "\nExit = 6");
+            int dinoToBuy = input.nextInt();
+            switch (dinoToBuy) {
+                case 1:
+                    Animal newTrex = new tRex(petName, petGender);
+                    if (enoughMoney(player, newTrex)) {
+                        player.ownedPets.add(newTrex);
+                        player.setMoney(player.getMoney() - newTrex.getPrice());
+                    }
+                    break;
+                case 2:
+                    Animal newVelo = new Velociraptor(petName, petGender);
+                    if (enoughMoney(player, newVelo)) {
+                        player.ownedPets.add(newVelo);
+                        player.setMoney(player.getMoney() - newVelo.getPrice());
+                    }
 
-                Animal newTrex = new tRex(petName, petGender);
-                if (enoughMoney(player, newTrex)) {
-                    player.ownedPets.add(newTrex);
-                    player.setMoney(player.getMoney() - newTrex.getPrice());
-                }
-                break;
-            case 2:
-                Animal newVelo = new Velociraptor(petName, petGender);
-                if (enoughMoney(player, newVelo)) {
-                    player.ownedPets.add(newVelo);
-                    player.setMoney(player.getMoney() - newVelo.getPrice());
-                }
+                    break;
+                case 3:
+                    Animal newTrice = new Triceratops(petName, petGender);
+                    if (enoughMoney(player, newTrice)) {
+                        player.ownedPets.add(newTrice);
+                        player.setMoney(player.getMoney() - newTrice.getPrice());
+                    }
+                    break;
+                case 4:
+                    Animal newStego = new stegosaurus(petName, petGender);
+                    if (enoughMoney(player, newStego)) {
+                        player.ownedPets.add(newStego);
+                        player.setMoney(player.getMoney() - newStego.getPrice());
+                    }
+                    break;
+                case 5:
+                    Animal newSpino = new spinosaurus(petName, petGender);
+                    if (enoughMoney(player, newSpino)) {
+                        player.ownedPets.add(newSpino);
+                        player.setMoney(player.getMoney() - newSpino.getPrice()
+                        );
+                    }
+                    break;
+                case 6:
+                    isRunning = false;
 
-                break;
-            case 3:
-                Animal newTrice = new Triceratops(petName, petGender);
-                if (enoughMoney(player, newTrice)) {
-                    player.ownedPets.add(newTrice);
-                    player.setMoney(player.getMoney() - newTrice.getPrice());
-                }
-                break;
-            case 4:
-                Animal newStego = new stegosaurus(petName, petGender);
-                if (enoughMoney(player, newStego)) {
-                    player.ownedPets.add(newStego);
-                    player.setMoney(player.getMoney() - newStego.getPrice());
-                }
-                break;
-            case 5:
-                Animal newSpino = new spinosaurus(petName, petGender);
-                if (enoughMoney(player, newSpino)) {
-                    player.ownedPets.add(newSpino);
-                    player.setMoney(player.getMoney() - newSpino.getPrice()
-                    );
-                }
-                break;
 
+            }
         }
+
     }
 
     /**
@@ -110,38 +115,44 @@ public class Store {
      *               and also draw money from your wallet.
      */
     public void buyFoodMenuChoice(Player player) {
-        Scanner input = new Scanner(System.in);
-        System.out.println("How many kg would you like to buy?");
-        int kgToBuy = input.nextInt();
-        System.out.println("And which kind of food would you like to buy?");
-        int foodToBuy = input.nextInt();
+        var isRunning = true;
+        while (isRunning) {
+            Scanner input = new Scanner(System.in);
+            System.out.println("How many kg would you like to buy?");
+            int kgToBuy = input.nextInt();
+            System.out.println("And which kind of food would you like to buy?" + "\n4 = Exit.");
+            int foodToBuy = input.nextInt();
 
-        switch (foodToBuy) {
-            case 1:
-                Food newMeat = new Meat(kgToBuy);
-                if (enoughMoneyFood(player, newMeat)) {
-                    player.ownedFood.add(newMeat);
-                    player.setMoney(player.getMoney() - newMeat.getTotalCost());
-                }
+            switch (foodToBuy) {
+                case 1:
+                    Food newMeat = new Meat(kgToBuy);
+                    if (enoughMoneyFood(player, newMeat)) {
+                        player.ownedFood.add(newMeat);
+                        player.setMoney(player.getMoney() - newMeat.getTotalCost());
+                    }
 
-                break;
-            case 2:
-                Food newVeggies = new Veggies(kgToBuy);
-                if (enoughMoneyFood(player, newVeggies)) {
-                    player.ownedFood.add(newVeggies);
-                    player.setMoney(player.getMoney() - newVeggies.getTotalCost());
-                }
+                    break;
+                case 2:
+                    Food newVeggies = new Veggies(kgToBuy);
+                    if (enoughMoneyFood(player, newVeggies)) {
+                        player.ownedFood.add(newVeggies);
+                        player.setMoney(player.getMoney() - newVeggies.getTotalCost());
+                    }
 
-                break;
-            case 3:
-                Food newFish = new Fish(kgToBuy);
-                if (enoughMoneyFood(player, newFish)) {
-                    player.ownedFood.add(newFish);
-                    player.setMoney(player.getMoney() - newFish.getTotalCost());
-                }
+                    break;
+                case 3:
+                    Food newFish = new Fish(kgToBuy);
+                    if (enoughMoneyFood(player, newFish)) {
+                        player.ownedFood.add(newFish);
+                        player.setMoney(player.getMoney() - newFish.getTotalCost());
+                    }
 
-                break;
+                    break;
+                case 4:
+                    isRunning = false;
+            }
         }
+
     }
 
 
@@ -156,7 +167,7 @@ public class Store {
         for (int i = 0; i < player.ownedPets.size(); i++) {
             System.out.println(i + 1 + ". " + player.ownedPets.get(i).name);
         }
-        int i = input.nextInt() + 1;
+        int i = input.nextInt() - 1;
 
         player.setMoney(player.getMoney() + player.petWorth(i));
         player.ownedPets.remove(i);
@@ -186,7 +197,7 @@ public class Store {
 
     }
 
-    public void breedAnimalMenuChoice(Player player) {  //Här måste jag skriva om
+    public void breedAnimalMenuChoice(Player player) { //kolla här
         Scanner input = new Scanner(System.in);
         getListPlayerPets(player);
         System.out.println("Choose your first pet.");
@@ -196,6 +207,11 @@ public class Store {
         breederCheck(player.ownedPets.get(dino1), player.ownedPets.get(dino2));
         if (breederCheck(player.ownedPets.get(dino1), player.ownedPets.get(dino2))) {
             breederSuccess(player.ownedPets.get(dino1), player);
+            System.out.println("\nSuccess!");
+            Game.pressEnterToContinue();
+        } else {
+            System.out.println("The breeding failed.");
+            Game.pressEnterToContinue();
         }
 
     }
@@ -290,7 +306,8 @@ public class Store {
 
     private boolean enoughMoney(Player player, Animal dino) {
         if (player.getMoney() > dino.getPrice()) {
-            System.out.println("\nYou just bought the pet: " + dino.name + " for " + dino.getPrice());
+            System.out.println("\nYou just bought a : " + getDinoClassName(dino)
+                    + " with the name: " + dino.name + " for " + dino.getPrice());
             Game.pressEnterToContinue();
             return true;
         }
@@ -318,12 +335,34 @@ public class Store {
     }
 
     /**
+     * No matter what animal you buy, this method returns the classname of the dino.
+     * For example: I want to buy a Trex, this method returns the Classname of Trex.
+     *
+     * @param dino
+     * @return
+     */
+
+    public String getDinoClassName(Animal dino) {
+        return dino.getClass().getSimpleName();
+    }
+
+    /**
      * @param player getListPlayerPets gives the player the list of all owned pets(Dinos)
      */
 
+    public void dinoInfo(Player player) {
+        for (int i = 0; i < player.ownedPets.size(); i++) {
+            System.out.println(i + 1 + ". " + player.ownedPets.get(i).name +
+                    player.ownedPets.getClass().getSimpleName() +
+                    player.ownedPets.get(i).gender +
+                    player.ownedPets.get(i).getHealth() +
+                    player.ownedPets.get(i).diet);
+        }
+    }
+
     public void getListPlayerPets(Player player) {
         for (int i = 0; i < player.ownedPets.size(); i++) {
-            System.out.println(i + 1 + ". " + player.ownedPets.get(i).name);
+            System.out.println(i+1 + ". " + player.ownedPets.get(i).name);
         }
 
     }
@@ -336,6 +375,7 @@ public class Store {
         for (int i = 0; i < player.ownedFood.size(); i++) {
             System.out.println(i + 1 + ". " + player.ownedFood.get(i).name);
         }
+
     }
 
     /**
@@ -355,14 +395,12 @@ public class Store {
 
     }
 
-        /*public void playerShowAllItems(Player player){
-        player.getName();
-        player.getMoney();
-        getListPlayerFood(player);
-        getListPlayerPets(player); + health + hur mycket det har gått ner:
-       show food:
+    public void playerShowAllItems(Player player) {
 
-    }*/
+        System.out.println(player.getName() + "Baloobas: " + player.getMoney());
+        getListPlayerFood(player);
+        getListPlayerPets(player);
+    }
 
 
 }

@@ -7,6 +7,7 @@ abstract class Animal {
     public int health;
     public int price;
     public String diet;
+    public boolean alive=true;
 
 
     public Animal(String name, String gender, int health, int price) {
@@ -24,6 +25,10 @@ class tRex extends Animal {
         this.diet = "Meat";
 
     }
+    public void die(){
+        System.out.println("Roar! I'm dead!");
+        super.dead();
+    }
 
 }
 
@@ -32,6 +37,10 @@ class Velociraptor extends Animal {
         super(name, gender);
         this.price = 50;
         this.diet = "Meat";
+    }
+    public void die(){
+        System.out.println("Roar! I'm dead!");
+        super.dead();
     }
 }
 
@@ -42,6 +51,10 @@ class Triceratops extends Animal {
         this.diet = "Veggies";
 
     }
+    public void die(){
+        System.out.println("Roar! I'm dead!");
+        super.dead();
+    }
 }
 
 class stegosaurus extends Animal {
@@ -51,6 +64,10 @@ class stegosaurus extends Animal {
         this.diet = "Veggies";
 
     }
+    public void die(){
+        System.out.println("Roar! I'm dead!");
+        super.dead();
+    }
 }
 
 class spinosaurus extends Animal {
@@ -59,6 +76,10 @@ class spinosaurus extends Animal {
         this.price = 250;
         this.diet = "Fish";
 
+    }
+    public void die(){
+        System.out.println("Roar! I'm dead!");
+        super.dead();
     }
 
 }

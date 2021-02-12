@@ -2,7 +2,9 @@ package com.company;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
 
@@ -84,8 +86,9 @@ public class Game {
     }
 
     public void playerListLoop() {
-        for (int j = 0; j < playerList.size(); j++) {
+        for (int j = 0; j < playerList.size();) {
             if (j == (playerList.size() - 1)) {
+                System.out.println("\n Player: " + playerList.get(j).name + " is up!");
                 store.storeMenu(playerList.get(0));
             } else {
                 j++;
@@ -103,18 +106,44 @@ public class Game {
             int i = 1;
             while (i < totalAmountOfRounds) {
 
-                int j=0;
+                int j = 0;
                 while (playerList.indexOf(j) < playerList.size() - 1) {
                     System.out.println("\nRound " + i + " Player: " + playerList.get(j).name + " is up!");
                     store.storeMenu(playerList.get(j));
                     playerListLoop();
                     i++;
-
+                    decreaseDinoHealth(playerList.get(j));
 
                 }
             }
         }
     }
+
+    public void decreaseDinoHealth(Player player) {
+        decreaseDinoHealthMechanic(player);
+    }
+
+    public void decreaseDinoHealthMechanic(Player player) {
+        for (int i = 0; i < player.ownedPets.size(); i++) {
+
+            Animal dino = player.ownedPets.get(i);
+            dino.setHealth(dino.getHealth() - decreaseDinoHealthRandom());
+
+            System.out.println("\nDino : " + dino.name + " lost " + decreaseDinoHealthRandom() + " health.");
+
+            if (dino.getHealth() == 0) {
+                dino.dead();
+                System.out.println(dino.name + " died! RIP.");
+                player.ownedPets.remove(dino);
+            }
+        }
+    }
+
+    public int decreaseDinoHealthRandom() {
+        int random = ThreadLocalRandom.current().nextInt(10, 30);
+        return random;
+    }
+
 }
 
 
