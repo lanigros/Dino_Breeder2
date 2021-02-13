@@ -1,8 +1,6 @@
 package com.company;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -15,7 +13,7 @@ public class Game {
     private int totalAmountOfRounds;
     private int amountOfPlayers;
     private Store store = new Store();
-    private int currentPlayer;
+    private Player currentPlayer;
 
     public Game(boolean newGame) {
         this.newGame = newGame;
@@ -85,23 +83,31 @@ public class Game {
 
     }
 
+    public void nextPlayer(int i) {
+        Player currentPlayer = playerList.get(i);
+        System.out.println("Player: " + currentPlayer.getName() + " is up!");
+        store.storeMenu(currentPlayer);
+    }
+
+    public Player getCurrentPlayer(int index) {
+        currentPlayer = playerList.get(index);
+        System.out.println("Player: " + currentPlayer.getName() + " is up!");
+        return currentPlayer;
+    }
+
     public void playerListLoop() {
-        for (int j = 0; j < playerList.size();) {
-            if (j == (playerList.size() - 1)) {
-                System.out.println("\n Player: " + playerList.get(j).name + " is up!");
-                store.storeMenu(playerList.get(0));
+
+        for (int i = 0; i < playerList.size() - 1; i++) {
+            Player currentPlayer = playerList.get(i);
+            if (playerList.indexOf(currentPlayer) == (playerList.size() - 1)) {
+                nextPlayer(0);
             } else {
-                j++;
-                System.out.println("\n Player: " + playerList.get(j).name + " is up!");
-                store.storeMenu(playerList.get(j));
-
-
+                store.storeMenu(getCurrentPlayer(i + 1));
             }
-
         }
     }
 
-    public void currentPlayer() {
+    public void newGame() {
         while (newGame) {
             int i = 1;
             while (i < totalAmountOfRounds) {
@@ -127,9 +133,10 @@ public class Game {
         for (int i = 0; i < player.ownedPets.size(); i++) {
 
             Animal dino = player.ownedPets.get(i);
+            dino.isAlive();
             dino.setHealth(dino.getHealth() - decreaseDinoHealthRandom());
 
-            System.out.println("\nDino : " + dino.name + " lost " + decreaseDinoHealthRandom() + " health.");
+            System.out.println("\nDino : " + dino.name + " lost " + " health.");
 
             if (dino.getHealth() == 0) {
                 dino.dead();

@@ -8,6 +8,6 @@ public class Main {
         Game newGame = new Game(true);
 
         newGame.roundsAndPlayers();
-        newGame.currentPlayer();
+        newGame.newGame();
     }
 }
