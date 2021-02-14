@@ -10,8 +10,10 @@ public class Store {
     public void storeMenu(Player player) {
 
         System.out.println("-".repeat(50));
-        System.out.println(" ".repeat(20) + "DINO STORE."); dinoInfo(player);
+        System.out.println("\t".repeat(5) + "DINO STORE.");
         System.out.println("-".repeat(50));
+        System.out.println("Player: " + player.getName() + "\t".repeat(7) + "Money :" + player.getMoney());
+        playerInfo(player);
 
         System.out.println("\nWhat would you like to do?");
         System.out.println("\n");
@@ -187,7 +189,9 @@ public class Store {
 
     public void getListPlayerFood(Player player) {
         for (int i = 0; i < player.ownedFood.size(); i++) {
-            System.out.println(i + 1 + ". " + player.ownedFood.get(i).name);
+            int kgs = player.ownedFood.get(i).kg;
+            String foodName = player.ownedFood.get(i).name;
+            System.out.println("\n" + (i + 1) + ". " + kgs + " kg of: " + foodName);
         }
 
     }
@@ -225,17 +229,23 @@ public class Store {
         System.out.println("Which animal would you like to feed?");
         getListPlayerPets(player);
         int animalIndex = input.nextInt() - 1;
-        player.ownedPets.get(animalIndex);
+        Animal getAnimalIndex = player.ownedPets.get(animalIndex);
+
         getListPlayerFood(player);
         int foodIndex = input.nextInt() - 1;
-        player.ownedFood.get(foodIndex);
+        Food getFoodIndex = player.ownedFood.get(foodIndex);
 
-        dietChecker(player.ownedFood.get(foodIndex), player.ownedPets.get(animalIndex));
+        System.out.println("How many kgs?");
+        int amountOfKgsFed = input.nextInt();
+
+        dietChecker(getFoodIndex, getAnimalIndex, amountOfKgsFed);
+
         Game.pressEnterToContinue();
-        player.removeFood(foodIndex); // Här måste fixas, maten raderas även om den inte är kompatibel med djuret.
+        getFoodIndex.removeKg(amountOfKgsFed);
 
 
     }
+
 
     public void breedAnimalMenuChoice(Player player) {
         Scanner input = new Scanner(System.in);
@@ -390,17 +400,25 @@ public class Store {
      * @param player getListPlayerPets gives the player the list of all owned pets(Dinos)
      */
 
-    public void dinoInfo(Player player) {
-        System.out.println(" ".repeat(150) + "Player: " + player.getName() + " Money: " + player.getMoney());
+    public void playerInfo(Player player) {
         for (int i = 0; i < player.ownedPets.size(); i++) {
-
-            System.out.println(" ".repeat(150) +
+            System.out.println(
                     (i + 1) + ". " + player.ownedPets.get(i).name + " | " +
                     "Type: " + player.ownedPets.get(i).getClass().getSimpleName() + " | " +
                     "Gender: " + player.ownedPets.get(i).gender + " | " +
                      "Health: " + player.ownedPets.get(i).getHealth() + "/100" + " | " +
                      "Diet: " + player.ownedPets.get(i).diet);
+
+
         }
+        getListPlayerFood(player);
+    }
+
+    public int replenishHealth(Animal dino, int amountOfKgsFed) {
+        int totalHealthRegain = 10 * amountOfKgsFed;
+        System.out.println("Om nom nom!" + "\n*Replenished " + totalHealthRegain + " health!*");
+
+        return dino.setHealth(dino.getHealth() + (totalHealthRegain) );
     }
 
     public void getListPlayerPets(Player player) {
@@ -418,12 +436,12 @@ public class Store {
      *             it will replenish the pets health by 25 points.
      */
 
-    public void dietChecker(Food food, Animal dino) {
+    public void dietChecker(Food food, Animal dino, int amountOfKgsFed) {
         if (!(food.name.equals(dino.diet))) {
             System.out.println("I don't eat that!");
             return;
         } else {
-            dino.replenishHealth();
+            replenishHealth(dino, amountOfKgsFed);
         }
 
     }

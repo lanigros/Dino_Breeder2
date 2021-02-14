@@ -15,6 +15,17 @@ abstract class Food {
 
     }
 
+    public int getKg() {
+        return kg;
+    }
+
+    public void setKg(int kg) {
+        this.kg = kg;
+    }
+
+    public void removeKg(int kgs){
+        setKg((getKg() - kgs));
+    }
 }
 
 class Meat extends Food{

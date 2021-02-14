@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -21,19 +22,25 @@ public class Game {
 
     }
 
-    public void Rounds(int AmountOfRounds) {
-        boolean rightAmount = true;
-        while (!rightAmount) {
+    public int Rounds() {
+        final int minRounds = 5;
+        final int maxRounds = 30;
+        int answer = 0;
+        Scanner input = new Scanner(System.in);
 
-            if (AmountOfRounds < 5 || AmountOfRounds > 30) {
-                System.out.println("Wrong amount of rounds! 5-30!");
-            } else {
-                totalAmountOfRounds = AmountOfRounds;
+        System.out.println("How many rounds: ");
+        answer = input.nextInt();
 
-            }
+        while (answer < minRounds || answer > maxRounds) {
+            System.out.println("Wrong amount of rounds! (5-30)");
+            System.out.println("\nTry again.");
+            answer = input.nextInt();
 
         }
-    } // Kolla igenom denna, det är en renskrivning av metoden under.
+
+        totalAmountOfRounds = answer;
+        return totalAmountOfRounds;
+    }
 
     public void banner() {
         System.out.println("+--------------------------+");
@@ -50,38 +57,40 @@ public class Game {
         }
     }
 
-    public void roundsAndPlayers() {
+    public int Players() {
+        int minPlayers = 1;
+        int maxPlayers = 4;
+        int answer;
+
         Scanner input = new Scanner(System.in);
-        banner();
-        System.out.println("\nEnter how many rounds you want to play.");
-        int rounds = input.nextInt();
-        input.nextLine();
-        while (rounds < 5 || rounds > 30) {
-            System.out.println("Wrong amount of rounds! (5-30)");
-            break;
+        System.out.println("\nEnter how many players:");
+        answer = input.nextInt();
+        while (answer < minPlayers || answer > maxPlayers) {
+            System.out.println("Wrong amount of players! (1-4)");
+            System.out.println("\nTry again.");
+            answer = input.nextInt();
         }
-        totalAmountOfRounds = rounds;
-
-
-        System.out.println("\nEnter how many players will be playing.");
-        int players = input.nextInt();
-        input.nextLine();
-        if (players < 1 || players > 4) {
-            System.out.println("Wrong amount of players! 1-4");
-
-        } else {
-
-            amountOfPlayers = players;
-
-            for (int i = 0; i < amountOfPlayers; i++) {
-                System.out.println("Name player " + (i + 1));
-                String playerNames = input.nextLine();
-                playerList.add((new Player(playerNames)));
-
-            }
-        }
-
+        amountOfPlayers = answer;
+        return amountOfPlayers;
     }
+
+    public void NamePlayers() {
+        Scanner input = new Scanner(System.in);
+        for (int i = 0; i < amountOfPlayers; i++) {
+            System.out.println("Name player: " + (i + 1));
+            String playerNames = input.nextLine();
+            playerList.add((new Player(playerNames)));
+        }
+    }
+
+
+    public void roundsAndPlayers() {
+        banner();
+        Rounds();
+        Players();
+        NamePlayers();
+    }
+
 
     public void nextPlayer(int i) {
         Player currentPlayer = playerList.get(i);
@@ -118,30 +127,23 @@ public class Game {
                     store.storeMenu(playerList.get(j));
                     playerListLoop();
                     i++;
-                    decreaseDinoHealth(playerList.get(j));
+                    decreaseDinoHealthMechanic(playerList.get(j));
 
                 }
             }
         }
     }
 
-    public void decreaseDinoHealth(Player player) {
-        decreaseDinoHealthMechanic(player);
-    }
-
     public void decreaseDinoHealthMechanic(Player player) {
-        for (int i = 0; i < player.ownedPets.size(); i++) {
 
+        for (int i = 0; i < player.ownedPets.size(); i++) {
             Animal dino = player.ownedPets.get(i);
             dino.isAlive();
             dino.setHealth(dino.getHealth() - decreaseDinoHealthRandom());
-
-            System.out.println("\nDino : " + dino.name + " lost " + " health.");
-
-            if (dino.getHealth() == 0) {
+            if (dino.getHealth() <= 0) {
                 dino.dead();
-                System.out.println(dino.name + " died! RIP.");
-                player.ownedPets.remove(dino);
+                System.out.println(dino.name + " died! RIP");
+                player.ownedPets.remove(i);
             }
         }
     }
