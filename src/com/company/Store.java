@@ -9,7 +9,7 @@ public class Store {
 
 
     public void storeMenu(Player player) {
-        int menuChoice = 0;
+
 
         System.out.println("-".repeat(50));
         System.out.println("\t".repeat(5) + "DINO STORE.");
@@ -22,39 +22,29 @@ public class Store {
         System.out.println("1) Buy animals" + "\n2) Sell animals" +
                 "\n3) Buy food" + "\n4) Feed animals" + "\n5) Breed animals");
         Scanner input = new Scanner(System.in);
+        int menuChoice= input.nextInt();
 
-        boolean repeat = true;
-        while (repeat) {
-            try {
-                menuChoice = input.nextInt();
-                repeat = false;
-            } catch (InputMismatchException e) {
-                System.out.println("Wrong input, it has to be a number between 1-5.");
-                input.next();
-                repeat = true;
-            }
+        switch (menuChoice) {
+            case 1:
+                buyAnimalsMenuChoice(player);
+                break;
+            case 2:
+                sellAnimalsMenuChoice(player);
+                break;
+            case 3:
+                buyFoodMenuChoice(player);
+                break;
+            case 4:
+                feedAnimalMenuChoice(player);
+                break;
+            case 5:
+                breedAnimalMenuChoice(player);
+                break;
+            default:
+                System.out.println("You have to choose between 1-5.");
+                break;
+
         }
-            switch (menuChoice) {
-                case 1:
-                    buyAnimalsMenuChoice(player);
-                    break;
-                case 2:
-                    sellAnimalsMenuChoice(player);
-                    break;
-                case 3:
-                    buyFoodMenuChoice(player);
-                    break;
-                case 4:
-                    feedAnimalMenuChoice(player);
-                    break;
-                case 5:
-                    breedAnimalMenuChoice(player);
-                    break;
-                default:
-                    System.out.println("You have to choose between 1-5.");
-                    break;
-
-            }
 
     }
 

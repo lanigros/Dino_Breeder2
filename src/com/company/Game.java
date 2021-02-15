@@ -30,11 +30,11 @@ public class Game {
 
         System.out.println("How many rounds: ");
         boolean repeat = true;
-        while(repeat){
-            try{
+        while (repeat) {
+            try {
                 answer = input.nextInt();
                 repeat = false;
-            } catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println("Wrong input, it has to be a number.");
                 input.next();
                 repeat = true;
@@ -116,50 +116,53 @@ public class Game {
         return currentPlayer;
     }
 
-    public void playerListLoop() {
+    public void getNextPlayer() {
 
-        for (int i = 0; i < playerList.size() - 1; i++) {
+        for (int i = 0; i < playerList.size() -1; i++) {
             Player currentPlayer = playerList.get(i);
             if (playerList.indexOf(currentPlayer) == (playerList.size() - 1)) {
                 nextPlayer(0);
             } else {
                 store.storeMenu(getCurrentPlayer(i + 1));
-
             }
-
         }
     }
 
     public void newGame() {
         while (newGame) {
+            roundsAndPlayers();
             int i = 1;
             while (i < totalAmountOfRounds) {
 
                 int j = 0;
-                while (playerList.indexOf(j) < playerList.size() - 1) {
-                    System.out.println("\nRound " + i + " Player: " + playerList.get(j).name + " is up!");
-                    store.storeMenu(playerList.get(j));
-                    playerListLoop();
-                    i++;
-                    decreaseDinoHealthMechanic(playerList.get(j)); // Jävla skit, fixa denna.
-                    endRound(i);
+                while (j <= playerList.size() - 1) {
 
+                    System.out.println("\nRound " + i + " Player: " + playerList.get(j).name + " is up!");
+
+                    store.storeMenu(playerList.get(j));
+                    decreaseDinoHealthMechanic(playerList.get(j));
+                    j++;
+                    //getNextPlayer();
 
                 }
+                i++;
+                endRound(i);
             }
+           newGame = false;
         }
     }
 
     public void decreaseDinoHealthMechanic(Player player) {
-
-        for (int i = 0; i < player.ownedPets.size(); i++) {
+        System.out.println(player.getName() + "Will decrease the health of your dino.");
+        for (int i = 0 ; i < player.ownedPets.size() ; i++) {
             Animal dino = player.ownedPets.get(i);
-            dino.isAlive();
-            dino.setHealth(dino.getHealth() - decreaseDinoHealthRandom());
+            int amountLost= decreaseDinoHealthRandom();
+            dino.setHealth(dino.getHealth() - amountLost);
+            System.out.println(dino.name + " lost: " + amountLost + " health");
             if (dino.getHealth() <= 0) {
                 dino.dead();
                 System.out.println(dino.name + " died! RIP");
-                player.ownedPets.remove(i);
+                player.ownedPets.remove(dino);
             }
         }
     }
@@ -169,15 +172,15 @@ public class Game {
         return random;
     }
 
-    public void endRound(int i){
-        if (i > totalAmountOfRounds){
+    public void endRound(int i) {
+        if (i > totalAmountOfRounds) {
             sellPlayersPets();
             winner();
-            newGame = false;
         }
     }
-    public void sellPlayersPets(){
-        for ( int i = 0 ; i < playerList.size(); i++){
+
+    public void sellPlayersPets() {
+        for (int i = 0; i < playerList.size(); i++) {
             Player player = playerList.get(i);
             for (int a = 0; a < player.ownedPets.size(); a++) {
                 player.setMoney(player.getMoney() + player.petWorth(a));
@@ -186,11 +189,12 @@ public class Game {
 
         }
     }
-    public void winner(){
+
+    public void winner() {
         int maxMoney = Integer.MIN_VALUE;
-        for (int i = 0 ; i < playerList.size(); i++){
+        for (int i = 0; i < playerList.size(); i++) {
             Player player = playerList.get(i);
-            if(player.getMoney() > maxMoney){
+            if (player.getMoney() > maxMoney) {
                 maxMoney = player.getMoney();
                 System.out.println("WINNER: " + player.getName() + " money :" + maxMoney);
             }
