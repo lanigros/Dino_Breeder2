@@ -29,11 +29,23 @@ public class Game {
         Scanner input = new Scanner(System.in);
 
         System.out.println("How many rounds: ");
-        answer = input.nextInt();
+        boolean repeat = true;
+        while(repeat){
+            try{
+                answer = input.nextInt();
+                repeat = false;
+            } catch (InputMismatchException e){
+                System.out.println("Wrong input, it has to be a number.");
+                input.next();
+                repeat = true;
+            }
+        }
+
 
         while (answer < minRounds || answer > maxRounds) {
             System.out.println("Wrong amount of rounds! (5-30)");
             System.out.println("\nTry again.");
+
             answer = input.nextInt();
 
         }
@@ -112,7 +124,9 @@ public class Game {
                 nextPlayer(0);
             } else {
                 store.storeMenu(getCurrentPlayer(i + 1));
+
             }
+
         }
     }
 
@@ -127,7 +141,9 @@ public class Game {
                     store.storeMenu(playerList.get(j));
                     playerListLoop();
                     i++;
-                    decreaseDinoHealthMechanic(playerList.get(j));
+                    decreaseDinoHealthMechanic(playerList.get(j)); // Jävla skit, fixa denna.
+                    endRound(i);
+
 
                 }
             }
@@ -153,6 +169,33 @@ public class Game {
         return random;
     }
 
+    public void endRound(int i){
+        if (i > totalAmountOfRounds){
+            sellPlayersPets();
+            winner();
+            newGame = false;
+        }
+    }
+    public void sellPlayersPets(){
+        for ( int i = 0 ; i < playerList.size(); i++){
+            Player player = playerList.get(i);
+            for (int a = 0; a < player.ownedPets.size(); a++) {
+                player.setMoney(player.getMoney() + player.petWorth(a));
+                player.ownedPets.remove(player.ownedPets.get(a));
+            }
+
+        }
+    }
+    public void winner(){
+        int maxMoney = Integer.MIN_VALUE;
+        for (int i = 0 ; i < playerList.size(); i++){
+            Player player = playerList.get(i);
+            if(player.getMoney() > maxMoney){
+                maxMoney = player.getMoney();
+                System.out.println("WINNER: " + player.getName() + " money :" + maxMoney);
+            }
+        }
+    }
 }
 
 

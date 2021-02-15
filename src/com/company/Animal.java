@@ -4,17 +4,50 @@ abstract class Animal {
 
     public String name;
     public String gender;
-    public int health;
+    public int health = 100;
     public int price;
     public String diet;
     public boolean alive=true;
 
-
-    public Animal(String name, String gender, int health, int price) {
+    public Animal(String name, String gender) { //Yeah
         this.name = name;
         this.gender = gender;
 
     }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int setHealth(int health) {
+        this.health = health;
+        return health;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public int getPrice() {
+        return this.price;
+    }
+
+    public int getTotalWorth() {
+        return health * price;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public boolean dead() {
+        return alive = false;
+    }
+
 
 }
 
