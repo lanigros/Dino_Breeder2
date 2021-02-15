@@ -9,8 +9,8 @@ public class Player {
     int money = 1000;
 
 
-    public ArrayList<Animal> ownedPets = new ArrayList<>(); // ownedPets.size()
-    public ArrayList<Food> ownedFood = new ArrayList<>(); // Börja med 0
+    public ArrayList<Animal> ownedPets = new ArrayList<>();
+    public ArrayList<Food> ownedFood = new ArrayList<>();
 
 
     public Player(String name) {

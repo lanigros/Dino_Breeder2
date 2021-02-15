@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -8,11 +9,12 @@ public class Store {
 
 
     public void storeMenu(Player player) {
+        int menuChoice = 0;
 
         System.out.println("-".repeat(50));
         System.out.println("\t".repeat(5) + "DINO STORE.");
         System.out.println("-".repeat(50));
-        System.out.println("Player: " + player.getName() + "\t".repeat(7) + "Money :" + player.getMoney());
+        System.out.println("Player: " + player.getName() + "\t".repeat(6) + "Money :" + player.getMoney());
         playerInfo(player);
 
         System.out.println("\nWhat would you like to do?");
@@ -20,28 +22,40 @@ public class Store {
         System.out.println("1) Buy animals" + "\n2) Sell animals" +
                 "\n3) Buy food" + "\n4) Feed animals" + "\n5) Breed animals");
         Scanner input = new Scanner(System.in);
-        int menuChoice = input.nextInt();
-        switch (menuChoice) {
-            case 1:
-                buyAnimalsMenuChoice(player);
-                break;
-            case 2:
-                sellAnimalsMenuChoice(player);
-                break;
-            case 3:
-                buyFoodMenuChoice(player);
-                break;
-            case 4:
-                feedAnimalMenuChoice(player);
 
-                break;
-            case 5:
-                breedAnimalMenuChoice(player);
-
-                break;
-
-
+        boolean repeat = true;
+        while (repeat) {
+            try {
+                menuChoice = input.nextInt();
+                repeat = false;
+            } catch (InputMismatchException e) {
+                System.out.println("Wrong input, it has to be a number between 1-5.");
+                input.next();
+                repeat = true;
+            }
         }
+            switch (menuChoice) {
+                case 1:
+                    buyAnimalsMenuChoice(player);
+                    break;
+                case 2:
+                    sellAnimalsMenuChoice(player);
+                    break;
+                case 3:
+                    buyFoodMenuChoice(player);
+                    break;
+                case 4:
+                    feedAnimalMenuChoice(player);
+                    break;
+                case 5:
+                    breedAnimalMenuChoice(player);
+                    break;
+                default:
+                    System.out.println("You have to choose between 1-5.");
+                    break;
+
+            }
+
     }
 
     /**
@@ -108,7 +122,7 @@ public class Store {
                     break;
                 case 6:
                     isRunning = false;
-
+                    break;
 
             }
         }
@@ -144,7 +158,7 @@ public class Store {
 
             switch (foodToBuy) {
                 case 1:
-                   int kgToBuy = amountOfKgs();
+                    int kgToBuy = amountOfKgs();
                     Food newMeat = new Meat(kgToBuy);
                     if (enoughMoneyFood(player, newMeat)) {
                         player.ownedFood.add(newMeat);
@@ -176,7 +190,8 @@ public class Store {
         }
 
     }
-    public int amountOfKgs(){
+
+    public int amountOfKgs() {
         Scanner input = new Scanner(System.in);
         System.out.println("How many kg would you like to buy?");
         int kgToBuy = input.nextInt();
@@ -191,11 +206,10 @@ public class Store {
         for (int i = 0; i < player.ownedFood.size(); i++) {
             int kgs = player.ownedFood.get(i).kg;
             String foodName = player.ownedFood.get(i).name;
-            System.out.println("\n" + (i + 1) + ". " + kgs + " kg of: " + foodName);
+            System.out.println("\n" + (i + 1) + ". " + foodName + " (amount : " + kgs + " kgs)");
         }
 
     }
-
 
 
     /**
@@ -231,6 +245,7 @@ public class Store {
         int animalIndex = input.nextInt() - 1;
         Animal getAnimalIndex = player.ownedPets.get(animalIndex);
 
+        System.out.println("What kind of food?");
         getListPlayerFood(player);
         int foodIndex = input.nextInt() - 1;
         Food getFoodIndex = player.ownedFood.get(foodIndex);
@@ -242,6 +257,10 @@ public class Store {
 
         Game.pressEnterToContinue();
         getFoodIndex.removeKg(amountOfKgsFed);
+        if (getFoodIndex.getKg() <= 0) {
+            System.out.println(getAnimalIndex.name + " was removed.");
+            player.ownedFood.remove(foodIndex);
+        }
 
 
     }
@@ -343,7 +362,7 @@ public class Store {
         Random random = new Random();
         int genderProcent = random.nextInt(100);
         if (genderProcent >= 50) {
-            return ("M");
+            return ("F");
         }
         return ("M");
     }
@@ -404,10 +423,10 @@ public class Store {
         for (int i = 0; i < player.ownedPets.size(); i++) {
             System.out.println(
                     (i + 1) + ". " + player.ownedPets.get(i).name + " | " +
-                    "Type: " + player.ownedPets.get(i).getClass().getSimpleName() + " | " +
-                    "Gender: " + player.ownedPets.get(i).gender + " | " +
-                     "Health: " + player.ownedPets.get(i).getHealth() + "/100" + " | " +
-                     "Diet: " + player.ownedPets.get(i).diet);
+                            "Type: " + player.ownedPets.get(i).getClass().getSimpleName() + " | " +
+                            "Gender: " + player.ownedPets.get(i).gender + " | " +
+                            "Health: " + player.ownedPets.get(i).getHealth() + "/100" + " | " +
+                            "Diet: " + player.ownedPets.get(i).diet);
 
 
         }
@@ -418,7 +437,7 @@ public class Store {
         int totalHealthRegain = 10 * amountOfKgsFed;
         System.out.println("Om nom nom!" + "\n*Replenished " + totalHealthRegain + " health!*");
 
-        return dino.setHealth(dino.getHealth() + (totalHealthRegain) );
+        return dino.setHealth(dino.getHealth() + (totalHealthRegain));
     }
 
     public void getListPlayerPets(Player player) {
@@ -446,5 +465,5 @@ public class Store {
 
     }
 
-    }
+}
 
