@@ -48,7 +48,9 @@ public class DialogueHelp {
     }
 
 
-    static public int menu(String menuName, String... options) {
+
+
+    public static int menu(String menuName, String... options) {
 
         // print the menu
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Player {
-    String name;
+    private String name;
     int money = 1000;
 
 
@@ -36,6 +36,18 @@ public class Player {
 
     public String getName() {
         return name;
+    }
+
+    public void sellPets(){
+        for (int a = 0; a < ownedPets.size(); a++) {
+            money+= petWorth(a);
+            System.out.println(ownedPets.get(a).name + " sold for " + petWorth(a));
+            ownedPets.remove(ownedPets.get(a));
+        }
+    }
+
+    public void removePlayer(){
+
     }
 
 }

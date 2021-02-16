@@ -1,15 +1,12 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
 
     ArrayList<Player> playerList;
-
-
+    private String winner;
     private boolean newGame = true;
     private int totalAmountOfRounds;
     private int amountOfPlayers;
@@ -104,64 +101,60 @@ public class Game {
     }
 
 
-    public void nextPlayer(int i) {
-        Player currentPlayer = playerList.get(i);
-        System.out.println("Player: " + currentPlayer.getName() + " is up!");
-        store.storeMenu(currentPlayer);
-    }
+//    public void nextPlayer(int i) {
+//        Player currentPlayer = playerList.get(i);
+//        System.out.println("Player: " + currentPlayer.getName() + " is up!");
+//        store.storeMenu(currentPlayer);
+//    }
+//    public Player getCurrentPlayer(int index) {
+//        currentPlayer = playerList.get(index);
+//        System.out.println("Player: " + currentPlayer.getName() + " is up!");
+//        return currentPlayer;
+//    }
+//    public void getNextPlayer() {
+//
+//        for (int i = 0; i < playerList.size() - 1; i++) {
+//            Player currentPlayer = playerList.get(i);
+//            if (playerList.indexOf(currentPlayer) == (playerList.size() - 1)) {
+//                nextPlayer(0);
+//            } else {
+//                store.storeMenu(getCurrentPlayer(i + 1));
+//            }
+//        }
+//    }
 
-    public Player getCurrentPlayer(int index) {
-        currentPlayer = playerList.get(index);
-        System.out.println("Player: " + currentPlayer.getName() + " is up!");
-        return currentPlayer;
-    }
-
-    public void getNextPlayer() {
-
-        for (int i = 0; i < playerList.size() -1; i++) {
-            Player currentPlayer = playerList.get(i);
-            if (playerList.indexOf(currentPlayer) == (playerList.size() - 1)) {
-                nextPlayer(0);
-            } else {
-                store.storeMenu(getCurrentPlayer(i + 1));
-            }
-        }
-    }
 
     public void newGame() {
         while (newGame) {
             roundsAndPlayers();
             int i = 1;
-            while (i < totalAmountOfRounds) {
+            while (i <= totalAmountOfRounds) {
 
                 int j = 0;
                 while (j <= playerList.size() - 1) {
 
-                    System.out.println("\nRound " + i + " Player: " + playerList.get(j).name + " is up!");
+                    System.out.println("\nRound " + i + " Player: " + playerList.get(j).getName() + " is up!");
 
                     store.storeMenu(playerList.get(j));
                     decreaseDinoHealthMechanic(playerList.get(j));
                     j++;
-                    //getNextPlayer();
 
                 }
                 i++;
                 endRound(i);
             }
-           newGame = false;
+
+            newGame = false;
         }
     }
 
     public void decreaseDinoHealthMechanic(Player player) {
-        System.out.println(player.getName() + "Will decrease the health of your dino.");
-        for (int i = 0 ; i < player.ownedPets.size() ; i++) {
+        for (int i = 0; i < player.ownedPets.size(); i++) {
             Animal dino = player.ownedPets.get(i);
-            int amountLost= decreaseDinoHealthRandom();
-            dino.setHealth(dino.getHealth() - amountLost);
-            System.out.println(dino.name + " lost: " + amountLost + " health");
-            if (dino.getHealth() <= 0) {
-                dino.dead();
-                System.out.println(dino.name + " died! RIP");
+            int amountLost = decreaseDinoHealthRandom();
+            dino.decreaseHealth(amountLost);
+            if (!dino.isAlive()) {
+                dino.die();
                 player.ownedPets.remove(dino);
             }
         }
@@ -174,32 +167,29 @@ public class Game {
 
     public void endRound(int i) {
         if (i > totalAmountOfRounds) {
+            DialogueHelp.clear();
+            System.out.println("\nTHE END OF ALL ROUNDS!... calculating...");
+            pressEnterToContinue();
             sellPlayersPets();
-            winner();
+            Player player = winner();
+            System.out.println("WINNER! : " + player.getName() + " with the total amount of money: " +
+                    player.getMoney());
+
         }
     }
 
     public void sellPlayersPets() {
-        for (int i = 0; i < playerList.size(); i++) {
-            Player player = playerList.get(i);
-            for (int a = 0; a < player.ownedPets.size(); a++) {
-                player.setMoney(player.getMoney() + player.petWorth(a));
-                player.ownedPets.remove(player.ownedPets.get(a));
-            }
-
+        for (Player player : playerList) {
+            player.sellPets();
         }
     }
 
-    public void winner() {
-        int maxMoney = Integer.MIN_VALUE;
-        for (int i = 0; i < playerList.size(); i++) {
-            Player player = playerList.get(i);
-            if (player.getMoney() > maxMoney) {
-                maxMoney = player.getMoney();
-                System.out.println("WINNER: " + player.getName() + " money :" + maxMoney);
-            }
-        }
+    public Player winner() {
+        playerList.sort(Comparator.comparingInt(Player::getMoney).reversed());
+        return playerList.get(0);
     }
+
+
 }
 
 

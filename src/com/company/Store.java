@@ -1,6 +1,5 @@
 package com.company;
 
-import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -22,7 +21,7 @@ public class Store {
         System.out.println("1) Buy animals" + "\n2) Sell animals" +
                 "\n3) Buy food" + "\n4) Feed animals" + "\n5) Breed animals");
         Scanner input = new Scanner(System.in);
-        int menuChoice= input.nextInt();
+        int menuChoice = input.nextInt();
 
         switch (menuChoice) {
             case 1:
@@ -94,7 +93,7 @@ public class Store {
                 case 4:
                     petName = decidePetName();
                     petGender = decideGenderPet();
-                    Animal newStego = new stegosaurus(petName, petGender);
+                    Animal newStego = new Stegosaurus(petName, petGender);
                     if (enoughMoney(player, newStego)) {
                         player.ownedPets.add(newStego);
                         player.setMoney(player.getMoney() - newStego.getPrice());
@@ -209,16 +208,19 @@ public class Store {
      */
     public void sellAnimalsMenuChoice(Player player) {
         Scanner input = new Scanner(System.in);
-        System.out.println("Which animal would you like to sell?");
-        for (int i = 0; i < player.ownedPets.size(); i++) {
-            System.out.println(i + 1 + ". " + player.ownedPets.get(i).name);
-        }
-        int i = input.nextInt() - 1;
 
-        player.setMoney(player.getMoney() + player.petWorth(i));
-        System.out.println("Sold for: " + player.petWorth(i));
-        Game.pressEnterToContinue();
-        player.ownedPets.remove(i);
+            System.out.println("Which animal would you like to sell?");
+            for (int i = 0; i < player.ownedPets.size(); i++) {
+                System.out.println(i + 1 + ". " + player.ownedPets.get(i).name);
+            }
+            int i = input.nextInt() - 1;
+
+            player.setMoney(player.getMoney() + player.petWorth(i));
+            System.out.println("Sold for: " + player.petWorth(i));
+            Game.pressEnterToContinue();
+            player.ownedPets.remove(i);
+
+
     }
 
     /**
@@ -331,8 +333,8 @@ public class Store {
             babyTriceratops.setGender(genderGenerator());
             player.ownedPets.add(babyTriceratops);
         }
-        if (dino1 instanceof stegosaurus) {
-            Animal babyStegosaurus = new stegosaurus(babyPetName, genderGenerator());
+        if (dino1 instanceof Stegosaurus) {
+            Animal babyStegosaurus = new Stegosaurus(babyPetName, genderGenerator());
             babyStegosaurus.setGender(genderGenerator());
             player.ownedPets.add(babyStegosaurus);
         }
@@ -446,8 +448,9 @@ public class Store {
     public int replenishHealth(Animal dino, int amountOfKgsFed) {
         int totalHealthRegain = 10 * amountOfKgsFed;
         System.out.println("Om nom nom!" + "\n*Replenished " + totalHealthRegain + " health!*");
+        dino.setHealth(dino.getHealth() + (totalHealthRegain));
 
-        return dino.setHealth(dino.getHealth() + (totalHealthRegain));
+        return dino.getHealth();
     }
 
     public void getListPlayerPets(Player player) {

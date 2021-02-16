@@ -9,6 +9,11 @@ abstract class Animal {
     public String diet;
     public boolean alive = true;
 
+    @Override
+    public String toString() {
+        return name + " has " + health;
+    }
+
     public Animal(String name, String gender) {
         this.name = name;
         this.gender = gender;
@@ -23,8 +28,19 @@ abstract class Animal {
         return health;
     }
 
-    public int setHealth(int health) {
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+    public void setHealth(int health){
         this.health = health;
+    }
+
+    public int decreaseHealth(int healthDecrease) {
+        health = health - healthDecrease;
+        if (health <= 0) {
+            alive = false;
+        }
+        System.out.println(name + " lost: " + healthDecrease + " health");
         return health;
     }
 
@@ -44,10 +60,15 @@ abstract class Animal {
         return alive;
     }
 
-    public boolean dead() {
+    public boolean isDead() {
         return alive = false;
-    }
+    } // namn
 
+    abstract void die();
+
+    public void die(String sound) {
+        System.out.println(sound + " i'm dead!");
+    }
 
 }
 
@@ -60,8 +81,7 @@ class tRex extends Animal {
     }
 
     public void die() {
-        System.out.println("Roar! I'm dead!");
-        super.dead();
+        super.die("Roar!");
     }
 
 }
@@ -74,8 +94,7 @@ class Velociraptor extends Animal {
     }
 
     public void die() {
-        System.out.println("Roar! I'm dead!");
-        super.dead();
+        super.die("Screech!");
     }
 }
 
@@ -88,13 +107,12 @@ class Triceratops extends Animal {
     }
 
     public void die() {
-        System.out.println("Roar! I'm dead!");
-        super.dead();
+        super.die("Squeek!");
     }
 }
 
-class stegosaurus extends Animal {
-    public stegosaurus(String name, String gender) {
+class Stegosaurus extends Animal {
+    public Stegosaurus(String name, String gender) {
         super(name, gender);
         this.price = 200;
         this.diet = "Veggies";
@@ -102,8 +120,7 @@ class stegosaurus extends Animal {
     }
 
     public void die() {
-        System.out.println("Roar! I'm dead!");
-        super.dead();
+        super.die("Wraaah!");
     }
 }
 
@@ -116,8 +133,7 @@ class spinosaurus extends Animal {
     }
 
     public void die() {
-        System.out.println("Roar! I'm dead!");
-        super.dead();
+        super.die("Blub!");
     }
 
 }
