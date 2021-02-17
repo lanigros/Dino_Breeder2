@@ -56,7 +56,7 @@ public class Store {
         var isRunning = true;
         while (isRunning) {
             getListAllDinos();
-            int dinoToBuy = DialogueHelp.answerChecker("\nWhich Dino will you buy? (1-5)" + "\nExit = 6", 1,6);
+            int dinoToBuy = DialogueHelp.answerChecker("\nWhich Dino will you buy? (1-5)" + "\nExit = 6", 1, 6);
             switch (dinoToBuy) {
                 case 1:
                     String petName = decidePetName();
@@ -111,26 +111,33 @@ public class Store {
 
             }
         }
-
     }
 
+    /**
+     *
+     * @return As the name suggests, decideGenderPet make the player give the terminal a value of "F" or "M".
+     */
     public String decideGenderPet() {
         Scanner input = new Scanner(System.in);
-        String genderAnswer="";
+        String genderAnswer = "";
         boolean isRunning = true;
-        while(isRunning){
+        while (isRunning) {
             System.out.println("\nAnd a gender (F/M)");
-             genderAnswer = input.nextLine();
-            if (genderAnswer.equalsIgnoreCase("F")){
-                isRunning=false;
-            }
-            else if (genderAnswer.equalsIgnoreCase("M")){
-                isRunning=false;
+            genderAnswer = input.nextLine();
+            if (genderAnswer.equalsIgnoreCase("F")) {
+                isRunning = false;
+            } else if (genderAnswer.equalsIgnoreCase("M")) {
+                isRunning = false;
             }
         }
         return genderAnswer;
     }
 
+    /**
+     *
+     * @return Let's the player choose a name for their pet. In this case i chose to allow the input to be numbers
+     * as well as regular letters or strings.
+     */
     public String decidePetName() {
         Scanner input = new Scanner(System.in);
         System.out.println("\nEnter a name for your pet:");
@@ -146,7 +153,7 @@ public class Store {
         var isRunning = true;
         while (isRunning) {
             getListAllFood();
-            int foodToBuy = DialogueHelp.answerChecker("\nWhich kind of food would you like to buy?" + "\n4 = Exit.", 1,4);
+            int foodToBuy = DialogueHelp.answerChecker("\nWhich kind of food would you like to buy?" + "\n4 = Exit.", 1, 4);
             switch (foodToBuy) {
                 case 1:
                     int kgToBuy = amountOfKgs();
@@ -182,6 +189,12 @@ public class Store {
 
     }
 
+    /**
+     *
+     * @return amountOfKgs works with the butFoodMenuChoice. Saves the amount of kilos you want to
+     * buy from a specific kind of food.
+     */
+
     public int amountOfKgs() {
         Scanner input = new Scanner(System.in);
         System.out.println("How many kg would you like to buy?");
@@ -209,17 +222,17 @@ public class Store {
      *               the money it originally cost times the health to your wallet.
      */
     public void sellAnimalsMenuChoice(Player player) {
-        
-            System.out.println();
-            for (int i = 0; i < player.ownedPets.size(); i++) {
-                System.out.println((i + 1) + ". " + player.ownedPets.get(i).name);
-            }
-            int i = DialogueHelp.answerChecker("\nWhich animal would you like to sell?",1, player.ownedPets.size()) -1;
 
-            player.setMoney(player.getMoney() + player.petWorth(i));
-            System.out.println("Sold for: " + player.petWorth(i));
-            Game.pressEnterToContinue();
-            player.ownedPets.remove(i);
+        System.out.println();
+        for (int i = 0; i < player.ownedPets.size(); i++) {
+            System.out.println((i + 1) + ". " + player.ownedPets.get(i).name);
+        }
+        int i = DialogueHelp.answerChecker("\nWhich animal would you like to sell?", 1, player.ownedPets.size()) - 1;
+
+        player.setMoney(player.getMoney() + player.petWorth(i));
+        System.out.println("Sold for: " + player.petWorth(i));
+        Game.pressEnterToContinue();
+        player.ownedPets.remove(i);
 
 
     }
@@ -228,13 +241,12 @@ public class Store {
      * @param player feedAnimalMenuChoice is showing you your list of foods and pets.
      *               you then have to choose the right food and the right pet.
      *               Depending on the animals diet it could either be denied or accepted and replenish health.
-     *               (!Needs to be looked over!)
      */
 
     public void feedAnimalMenuChoice(Player player) {
         DialogueHelp.clear();
         getListPlayerPets(player);
-        int animalIndex = DialogueHelp.answerChecker("Which animal would you like to feed?", 1, player.ownedPets.size())- 1;
+        int animalIndex = DialogueHelp.answerChecker("Which animal would you like to feed?", 1, player.ownedPets.size()) - 1;
         Animal getAnimalIndex = player.ownedPets.get(animalIndex);
 
         getListPlayerFood(player);
@@ -255,11 +267,15 @@ public class Store {
 
     }
 
-
+    /**
+     * @param player breedAnimalMenuChoice lets the player to choose from 2 of their pets to try to make them breed.
+     *               There is a 50/50 chance that it will succeed and when it does, it lets the player give the
+     *               a new name, the gender is randomly assigned to the baby.
+     */
     public void breedAnimalMenuChoice(Player player) {
         getListPlayerPets(player);
-        int dino1= DialogueHelp.answerChecker("Choose your first pet.", 1, player.ownedPets.size())-1;
-        int dino2 = DialogueHelp.answerChecker("Choose your second pet.",1, player.ownedPets.size())-1;
+        int dino1 = DialogueHelp.answerChecker("Choose your first pet.", 1, player.ownedPets.size()) - 1;
+        int dino2 = DialogueHelp.answerChecker("Choose your second pet.", 1, player.ownedPets.size()) - 1;
 
         breederCheck(player.ownedPets.get(dino1), player.ownedPets.get(dino2));
         if (breederCheck(player.ownedPets.get(dino1), player.ownedPets.get(dino2))) {
@@ -308,6 +324,14 @@ public class Store {
         }
         return false;
     }
+
+    /**
+     *
+     * @param dino1
+     * @param player When breeding is a success, BreederSuccess starts and lets you choose the name.
+     *               It creates a new object from the Animal class and depending on the parent,
+     *               the babypet will be of the same subclass as the parent.
+     */
 
     public void breederSuccess(Animal dino1, Player player) {
         Scanner input = new Scanner(System.in);
@@ -441,6 +465,15 @@ public class Store {
         getListPlayerFood(player);
     }
 
+    /**
+     *
+     * @param dino
+     * @param amountOfKgsFed
+     * @return ReplenishHealth decides the amount of health the food will generate by multiplying
+     *         10 and the amount of kgs fed to the pet. e.g if the animal receives 10kgs of meat, it will
+     *         generate a total return of 100 health points.
+     */
+
     public int replenishHealth(Animal dino, int amountOfKgsFed) {
         int totalHealthRegain = 10 * amountOfKgsFed;
         System.out.println("Om nom nom!" + "\n*Replenished " + totalHealthRegain + " health!*");
@@ -448,6 +481,11 @@ public class Store {
 
         return dino.getHealth();
     }
+
+    /**
+     *
+     * @param player Loops through player pets.
+     */
 
     public void getListPlayerPets(Player player) {
         for (int i = 0; i < player.ownedPets.size(); i++) {
