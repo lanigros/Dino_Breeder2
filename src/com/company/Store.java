@@ -1,5 +1,6 @@
 package com.company;
 
+import javax.swing.*;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -115,16 +116,25 @@ public class Store {
 
     public String decideGenderPet() {
         Scanner input = new Scanner(System.in);
-        System.out.println("\nAnd a gender (F/M)");
-        String petGender = input.nextLine();
-        return petGender;
+        String genderAnswer="";
+        boolean isRunning = true;
+        while(isRunning){
+            System.out.println("\nAnd a gender (F/M)");
+             genderAnswer = input.nextLine();
+            if (genderAnswer.equalsIgnoreCase("F")){
+                isRunning=false;
+            }
+            else if (genderAnswer.equalsIgnoreCase("M")){
+                isRunning=false;
+            }
+        }
+        return genderAnswer;
     }
 
     public String decidePetName() {
         Scanner input = new Scanner(System.in);
         System.out.println("\nEnter a name for your pet:");
-        String petName = input.nextLine();
-        return petName;
+        return input.nextLine();
     }
 
     /**
@@ -247,12 +257,10 @@ public class Store {
 
 
     public void breedAnimalMenuChoice(Player player) {
-        Scanner input = new Scanner(System.in);
         getListPlayerPets(player);
-        System.out.println("Choose your first pet.");
-        int dino1 = input.nextInt() - 1;
-        System.out.println("Choose your second pet.");
-        int dino2 = input.nextInt() - 1;
+        int dino1= DialogueHelp.answerChecker("Choose your first pet.", 1, player.ownedPets.size())-1;
+        int dino2 = DialogueHelp.answerChecker("Choose your second pet.",1, player.ownedPets.size())-1;
+
         breederCheck(player.ownedPets.get(dino1), player.ownedPets.get(dino2));
         if (breederCheck(player.ownedPets.get(dino1), player.ownedPets.get(dino2))) {
             breederSuccess(player.ownedPets.get(dino1), player);

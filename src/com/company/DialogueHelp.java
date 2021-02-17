@@ -1,4 +1,5 @@
 package com.company;
+
 import java.util.Scanner;
 
 public class DialogueHelp {
@@ -46,16 +47,14 @@ public class DialogueHelp {
 
     }
 
-    static public int answerChecker(String question, int min, int max){
+    static public int answerChecker(String question, int min, int max) {
         var answer = min - 1;
-        try{
+        try {
             answer = Integer.parseInt(prompt(question));
         } catch (Exception ignore) {
         }
         return answer < min || answer > max ? promptInt(question, min, max) : answer;
     }
-
-
 
     public static int menu(String menuName, String... options) {
 
