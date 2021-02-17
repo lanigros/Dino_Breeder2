@@ -16,13 +16,11 @@ public class Store {
         System.out.println("Player: " + player.getName() + "\t".repeat(6) + "Money :" + player.getMoney());
         playerInfo(player);
 
-        System.out.println("\nWhat would you like to do?");
         System.out.println("\n");
         System.out.println("1) Buy animals" + "\n2) Sell animals" +
                 "\n3) Buy food" + "\n4) Feed animals" + "\n5) Breed animals");
-        Scanner input = new Scanner(System.in);
-        int menuChoice = input.nextInt();
-
+        System.out.println("\n");
+        int menuChoice = DialogueHelp.answerChecker("What would you like to do?", 1, 5);
         switch (menuChoice) {
             case 1:
                 buyAnimalsMenuChoice(player);
@@ -54,18 +52,15 @@ public class Store {
      */
 
     public void buyAnimalsMenuChoice(Player player) {
-        Scanner input = new Scanner(System.in);
         var isRunning = true;
         while (isRunning) {
             getListAllDinos();
-            System.out.println("\nWhich Dino will you buy? (1-5)" +
-                    "\nExit = 6");
-            int dinoToBuy = input.nextInt();
+            int dinoToBuy = DialogueHelp.answerChecker("\nWhich Dino will you buy? (1-5)" + "\nExit = 6", 1,6);
             switch (dinoToBuy) {
                 case 1:
                     String petName = decidePetName();
                     String petGender = decideGenderPet();
-                    Animal newTrex = new tRex(petName, petGender);
+                    Animal newTrex = new Trex(petName, petGender);
                     if (enoughMoney(player, newTrex)) {
                         player.ownedPets.add(newTrex);
                         player.setMoney(player.getMoney() - newTrex.getPrice());
@@ -102,7 +97,7 @@ public class Store {
                 case 5:
                     petName = decidePetName();
                     petGender = decideGenderPet();
-                    Animal newSpino = new spinosaurus(petName, petGender);
+                    Animal newSpino = new Spinosaurus(petName, petGender);
                     if (enoughMoney(player, newSpino)) {
                         player.ownedPets.add(newSpino);
                         player.setMoney(player.getMoney() - newSpino.getPrice()
@@ -140,11 +135,8 @@ public class Store {
     public void buyFoodMenuChoice(Player player) {
         var isRunning = true;
         while (isRunning) {
-            Scanner input = new Scanner(System.in);
             getListAllFood();
-            System.out.println("\nWhich kind of food would you like to buy?" + "\n4 = Exit.");
-            int foodToBuy = input.nextInt();
-
+            int foodToBuy = DialogueHelp.answerChecker("\nWhich kind of food would you like to buy?" + "\n4 = Exit.", 1,4);
             switch (foodToBuy) {
                 case 1:
                     int kgToBuy = amountOfKgs();
@@ -207,13 +199,12 @@ public class Store {
      *               the money it originally cost times the health to your wallet.
      */
     public void sellAnimalsMenuChoice(Player player) {
-        Scanner input = new Scanner(System.in);
-
-            System.out.println("Which animal would you like to sell?");
+        
+            System.out.println();
             for (int i = 0; i < player.ownedPets.size(); i++) {
-                System.out.println(i + 1 + ". " + player.ownedPets.get(i).name);
+                System.out.println((i + 1) + ". " + player.ownedPets.get(i).name);
             }
-            int i = input.nextInt() - 1;
+            int i = DialogueHelp.answerChecker("\nWhich animal would you like to sell?",1, player.ownedPets.size()) -1;
 
             player.setMoney(player.getMoney() + player.petWorth(i));
             System.out.println("Sold for: " + player.petWorth(i));
@@ -231,19 +222,16 @@ public class Store {
      */
 
     public void feedAnimalMenuChoice(Player player) {
-        Scanner input = new Scanner(System.in);
-        System.out.println("Which animal would you like to feed?");
+        DialogueHelp.clear();
         getListPlayerPets(player);
-        int animalIndex = input.nextInt() - 1;
+        int animalIndex = DialogueHelp.answerChecker("Which animal would you like to feed?", 1, player.ownedPets.size())- 1;
         Animal getAnimalIndex = player.ownedPets.get(animalIndex);
 
-        System.out.println("What kind of food?");
         getListPlayerFood(player);
-        int foodIndex = input.nextInt() - 1;
+        int foodIndex = DialogueHelp.answerChecker("What kind of food?", 1, player.ownedFood.size()) - 1;
         Food getFoodIndex = player.ownedFood.get(foodIndex);
 
-        System.out.println("How many kgs?");
-        int amountOfKgsFed = input.nextInt();
+        int amountOfKgsFed = DialogueHelp.answerChecker("How many kgs?", 1, player.ownedFood.get(foodIndex).kg);
 
         dietChecker(getFoodIndex, getAnimalIndex, amountOfKgsFed);
 
@@ -318,8 +306,8 @@ public class Store {
         System.out.println("Enter a name for your baby pet:");
         String babyPetName = input.nextLine();
 
-        if (dino1 instanceof tRex) {
-            Animal babyTrex = new tRex(babyPetName, genderGenerator());
+        if (dino1 instanceof Trex) {
+            Animal babyTrex = new Trex(babyPetName, genderGenerator());
             babyTrex.setGender(genderGenerator());
             player.ownedPets.add(babyTrex);
         }
@@ -338,8 +326,8 @@ public class Store {
             babyStegosaurus.setGender(genderGenerator());
             player.ownedPets.add(babyStegosaurus);
         }
-        if (dino1 instanceof spinosaurus) {
-            Animal babySpinosaurus = new spinosaurus(babyPetName, genderGenerator());
+        if (dino1 instanceof Spinosaurus) {
+            Animal babySpinosaurus = new Spinosaurus(babyPetName, genderGenerator());
             babySpinosaurus.setGender(genderGenerator());
             player.ownedPets.add(babySpinosaurus);
         }
@@ -366,9 +354,9 @@ public class Store {
      */
 
     private boolean enoughMoney(Player player, Animal dino) {
-        if (player.getMoney() > dino.getPrice()) {
-            System.out.println("\nYou just bought a : " + getDinoClassName(dino)
-                    + " with the name: " + dino.name + " for " + dino.getPrice());
+        if (player.getMoney() >= dino.getPrice()) {
+            System.out.println("\nYou just bought a " + getDinoClassName(dino)
+                    + " with the name " + dino.name + " for " + dino.getPrice());
             Game.pressEnterToContinue();
             return true;
         }
@@ -384,7 +372,7 @@ public class Store {
      */
 
     private boolean enoughMoneyFood(Player player, Food food) {
-        if (player.getMoney() > food.getTotalCost()) {
+        if (player.getMoney() >= food.getTotalCost()) {
             return true;
         }
         System.out.println("Not enough money!");

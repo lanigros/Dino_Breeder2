@@ -14,7 +14,6 @@ public class DialogueHelp {
 
     }
 
-
     static public String prompt(String question) {
 
         // clear() ? maybe we want a clear before each prompt
@@ -47,6 +46,14 @@ public class DialogueHelp {
 
     }
 
+    static public int answerChecker(String question, int min, int max){
+        var answer = min - 1;
+        try{
+            answer = Integer.parseInt(prompt(question));
+        } catch (Exception ignore) {
+        }
+        return answer < min || answer > max ? promptInt(question, min, max) : answer;
+    }
 
 
 

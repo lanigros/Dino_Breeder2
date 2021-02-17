@@ -46,8 +46,8 @@ public class Player {
         }
     }
 
-    public void removePlayer(){
-
+    public boolean stillGotGame(){
+            return money > 0 && ownedPets.size() > 0;
     }
 
 }

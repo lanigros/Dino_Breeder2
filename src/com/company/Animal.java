@@ -72,8 +72,8 @@ abstract class Animal {
 
 }
 
-class tRex extends Animal {
-    public tRex(String name, String gender) {
+class Trex extends Animal {
+    public Trex(String name, String gender) {
         super(name, gender);
         this.price = 100;
         this.diet = "Meat";
@@ -124,8 +124,8 @@ class Stegosaurus extends Animal {
     }
 }
 
-class spinosaurus extends Animal {
-    public spinosaurus(String name, String gender) {
+class Spinosaurus extends Animal {
+    public Spinosaurus(String name, String gender) {
         super(name, gender);
         this.price = 250;
         this.diet = "Fish";
