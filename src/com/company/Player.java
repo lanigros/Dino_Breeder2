@@ -47,7 +47,7 @@ public class Player {
     }
 
     public boolean stillGotGame(){
-            return money > 0 && ownedPets.size() > 0;
+            return money > 0 || ownedPets.size() > 0;
     }
 
 }

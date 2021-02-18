@@ -10,7 +10,7 @@ public class Game {
     private boolean newGame = true;
     private int totalAmountOfRounds;
     private int amountOfPlayers;
-    private Store store = new Store();
+    private final Store store = new Store();
 
 
     public Game(boolean newGame) {
@@ -20,7 +20,6 @@ public class Game {
     }
 
     /**
-     *
      * @return Decide how many rounds.
      */
 
@@ -48,7 +47,6 @@ public class Game {
     }
 
     /**
-     *
      * @return Decide how many players will be playing.
      */
 
@@ -91,24 +89,23 @@ public class Game {
     public void newGame() {
         while (newGame) {
             roundsAndPlayers();
-            int i = 1;
-            while (i <= totalAmountOfRounds) {
+            int rounds = 1;
+            while (rounds <= totalAmountOfRounds) {
 
-                int j = 0;
-                while (j <= playerList.size() - 1) {
+                int currentplayer = 0;
+                while (currentplayer <= playerList.size() - 1) {
 
-                    System.out.println("\nRound " + i + " Player: " + playerList.get(j).getName() + " is up!");
+                    System.out.println("\nRound " + rounds + " Player: " + playerList.get(currentplayer).getName() + " is up!");
 
-                    store.storeMenu(playerList.get(j));
-                    decreaseDinoHealthMechanic(playerList.get(j));
-                    checkingPlayerStats(playerList.get(j));
-                    j++;
+                    store.storeMenu(playerList.get(currentplayer));
+                    decreaseDinoHealthMechanic(playerList.get(currentplayer));
+                    checkingPlayerStats(playerList.get(currentplayer));
+                    currentplayer++;
 
                 }
-                i++;
-                endRound(i);
+                rounds++;
+                endRound(rounds);
             }
-
             newGame = false;
         }
     }
@@ -130,8 +127,8 @@ public class Game {
         return random;
     }
 
-    public void checkingPlayerStats(Player player){
-        if(!player.stillGotGame()){
+    public void checkingPlayerStats(Player player) {
+        if (!player.stillGotGame()) {
             System.out.println(player.getName() +
                     " was removed from the game due to insufficient funds and Animals.");
             playerList.remove(player);

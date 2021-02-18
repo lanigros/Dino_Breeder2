@@ -114,7 +114,6 @@ public class Store {
     }
 
     /**
-     *
      * @return As the name suggests, decideGenderPet make the player give the terminal a value of "F" or "M".
      */
     public String decideGenderPet() {
@@ -134,7 +133,6 @@ public class Store {
     }
 
     /**
-     *
      * @return Let's the player choose a name for their pet. In this case i chose to allow the input to be numbers
      * as well as regular letters or strings.
      */
@@ -190,7 +188,6 @@ public class Store {
     }
 
     /**
-     *
      * @return amountOfKgs works with the butFoodMenuChoice. Saves the amount of kilos you want to
      * buy from a specific kind of food.
      */
@@ -222,9 +219,10 @@ public class Store {
      *               the money it originally cost times the health to your wallet.
      */
     public void sellAnimalsMenuChoice(Player player) {
+        if (player.ownedPets.size() != 0) {
             for (int i = 0; i < player.ownedPets.size(); i++) {
-            System.out.println((i + 1) + ". " + player.ownedPets.get(i).name);
-        }
+                System.out.println((i + 1) + ". " + player.ownedPets.get(i).name);
+            }
             int i = DialogueHelp.answerChecker("\nWhich animal would you like to sell?", 0, player.ownedPets.size()) - 1;
 
             player.setMoney(player.getMoney() + player.petWorth(i));
@@ -232,9 +230,13 @@ public class Store {
             Game.pressEnterToContinue();
             player.ownedPets.remove(i);
 
-        int choice = DialogueHelp.promptInt("Do you want to sell more? 1 = sell more. 2 = Exit", 1, 2);
-        if (choice == 1){
-            sellAnimalsMenuChoice(player);
+            int choice = DialogueHelp.promptInt("Do you want to sell more? 1 = sell more. 2 = Exit", 1, 2);
+            if (choice == 1) {
+                sellAnimalsMenuChoice(player);
+            }
+        } else {
+            System.out.println("You have no pets.");
+            Game.pressEnterToContinue();
         }
 
     }
@@ -328,7 +330,6 @@ public class Store {
     }
 
     /**
-     *
      * @param dino1
      * @param player When breeding is a success, BreederSuccess starts and lets you choose the name.
      *               It creates a new object from the Animal class and depending on the parent,
@@ -468,19 +469,18 @@ public class Store {
     }
 
     /**
-     *
      * @param dino
      * @param amountOfKgsFed
      * @return ReplenishHealth decides the amount of health the food will generate by multiplying
-     *         10 and the amount of kgs fed to the pet. e.g if the animal receives 10kgs of meat, it will
-     *         generate a total return of 100 health points.
+     * 10 and the amount of kgs fed to the pet. e.g if the animal receives 10kgs of meat, it will
+     * generate a total return of 100 health points.
      */
 
     public int replenishHealth(Animal dino, int amountOfKgsFed) {
         int totalHealthRegain = 10 * amountOfKgsFed;
         System.out.println("Om nom nom!" + "\n*Replenished " + totalHealthRegain + " health!*");
         dino.setHealth(dino.getHealth() + (totalHealthRegain));
-        if(dino.getHealth() > 100){
+        if (dino.getHealth() > 100) {
             dino.setHealth(100);
         }
 
@@ -488,7 +488,6 @@ public class Store {
     }
 
     /**
-     *
      * @param player Loops through player pets.
      */
 
