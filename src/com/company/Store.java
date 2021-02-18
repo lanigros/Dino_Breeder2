@@ -222,18 +222,20 @@ public class Store {
      *               the money it originally cost times the health to your wallet.
      */
     public void sellAnimalsMenuChoice(Player player) {
-
-        System.out.println();
-        for (int i = 0; i < player.ownedPets.size(); i++) {
+            for (int i = 0; i < player.ownedPets.size(); i++) {
             System.out.println((i + 1) + ". " + player.ownedPets.get(i).name);
         }
-        int i = DialogueHelp.answerChecker("\nWhich animal would you like to sell?", 1, player.ownedPets.size()) - 1;
+            int i = DialogueHelp.answerChecker("\nWhich animal would you like to sell?", 0, player.ownedPets.size()) - 1;
 
-        player.setMoney(player.getMoney() + player.petWorth(i));
-        System.out.println("Sold for: " + player.petWorth(i));
-        Game.pressEnterToContinue();
-        player.ownedPets.remove(i);
+            player.setMoney(player.getMoney() + player.petWorth(i));
+            System.out.println("Sold for: " + player.petWorth(i));
+            Game.pressEnterToContinue();
+            player.ownedPets.remove(i);
 
+        int choice = DialogueHelp.promptInt("Do you want to sell more? 1 = sell more. 2 = Exit", 1, 2);
+        if (choice == 1){
+            sellAnimalsMenuChoice(player);
+        }
 
     }
 
@@ -478,6 +480,9 @@ public class Store {
         int totalHealthRegain = 10 * amountOfKgsFed;
         System.out.println("Om nom nom!" + "\n*Replenished " + totalHealthRegain + " health!*");
         dino.setHealth(dino.getHealth() + (totalHealthRegain));
+        if(dino.getHealth() > 100){
+            dino.setHealth(100);
+        }
 
         return dino.getHealth();
     }

@@ -19,6 +19,11 @@ public class Game {
 
     }
 
+    /**
+     *
+     * @return Decide how many rounds.
+     */
+
     public int Rounds() {
         final int minRounds = 5;
         final int maxRounds = 30;
@@ -42,6 +47,11 @@ public class Game {
         }
     }
 
+    /**
+     *
+     * @return Decide how many players will be playing.
+     */
+
     public int Players() {
         final int minPlayers = 1;
         final int maxPlayers = 4;
@@ -49,6 +59,10 @@ public class Game {
         amountOfPlayers = DialogueHelp.answerChecker("How many players?", minPlayers, maxPlayers);
         return amountOfPlayers;
     }
+
+    /**
+     * After a given amount of players in the range of 1-4, You as a player get to choose the name of them.
+     */
 
     public void NamePlayers() {
         Scanner input = new Scanner(System.in);
@@ -59,6 +73,9 @@ public class Game {
         }
     }
 
+    /**
+     * A method that calls 3 other methods.
+     */
 
     public void roundsAndPlayers() {
         banner();
@@ -67,6 +84,9 @@ public class Game {
         NamePlayers();
     }
 
+    /**
+     * Here's where the magic happens.
+     */
 
     public void newGame() {
         while (newGame) {
