@@ -112,6 +112,12 @@ public class Game {
         }
     }
 
+    /**
+     *
+     * @param player After each round the method decreases the health of
+     *               each pet owned by the current player.
+     */
+
     public void decreaseDinoHealthMechanic(Player player) {
         for (int i = 0; i < player.ownedPets.size(); i++) {
             Animal dino = player.ownedPets.get(i);
@@ -124,10 +130,22 @@ public class Game {
         }
     }
 
+    /**
+     *
+     * @return Method that returns a randomized number between 10-30.
+     */
+
     public int decreaseDinoHealthRandom() {
         int random = ThreadLocalRandom.current().nextInt(10, 30);
         return random;
     }
+
+    /**
+     *
+     * @param player CheckingPlayerStats checks if the currentplayer has
+     *               owned animals and sufficient funds ( money ), and if
+     *               they don't. The method deleted the players.
+     */
 
     public void checkingPlayerStats(Player player) {
         if (!player.stillGotGame()) {
@@ -137,6 +155,12 @@ public class Game {
         }
     }
 
+    /**
+     *
+     * @param i When the variable i has reached the total given amount of
+     *          rounds, it will clear the termimal and sell off the player
+     *          pets and declare the winner.
+     */
     public void endRound(int i) {
         if (i > totalAmountOfRounds) {
             DialogueHelp.clear();
@@ -150,12 +174,22 @@ public class Game {
         }
     }
 
+    /**
+     * SellPlayerPets goes into loop that goes through all the players
+     * and sell their pets.
+     */
     public void sellPlayersPets() {
         for (Player player : playerList) {
             player.sellPets();
         }
     }
 
+    /**
+     *
+     * @return Winner goes finally through the playerlist and compares the amount of money each player
+     * has, instead of writing the code ( playerList.sort((p1,p2)->(p1.getMoney() - p2.getMoney()); ) the
+     * IDE recommended me to use the code below instead, which does basically the same thing.
+     */
     public Player winner() {
         playerList.sort(Comparator.comparingInt(Player::getMoney).reversed());
         return playerList.get(0);
