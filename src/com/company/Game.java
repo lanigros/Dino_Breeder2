@@ -94,15 +94,15 @@ public class Game {
 
                 int currentplayer = 0;
                 while (currentplayer <= playerList.size() - 1) {
-                    if(playerList.get(currentplayer).stillGotGame()){  //ny
+                    if(playerList.get(currentplayer).stillGotGame()){
 
                         System.out.println("\nRound " + rounds + " Player: " + playerList.get(currentplayer).getName() + " is up!");
 
                         store.storeMenu(playerList.get(currentplayer));
                         decreaseDinoHealthMechanic(playerList.get(currentplayer));
                         currentplayer++;
-                    } else {    //ny
-                        checkingPlayerStats(playerList.get(currentplayer)); // flyttad hit istället
+                    } else {
+                        checkingPlayerStats(playerList.get(currentplayer));
                     }
                 }
                 rounds++;
