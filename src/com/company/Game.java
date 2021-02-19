@@ -94,14 +94,16 @@ public class Game {
 
                 int currentplayer = 0;
                 while (currentplayer <= playerList.size() - 1) {
+                    if(playerList.get(currentplayer).stillGotGame()){  //ny
 
-                    System.out.println("\nRound " + rounds + " Player: " + playerList.get(currentplayer).getName() + " is up!");
+                        System.out.println("\nRound " + rounds + " Player: " + playerList.get(currentplayer).getName() + " is up!");
 
-                    store.storeMenu(playerList.get(currentplayer));
-                    decreaseDinoHealthMechanic(playerList.get(currentplayer));
-                    checkingPlayerStats(playerList.get(currentplayer));
-                    currentplayer++;
-
+                        store.storeMenu(playerList.get(currentplayer));
+                        decreaseDinoHealthMechanic(playerList.get(currentplayer));
+                        currentplayer++;
+                    } else {    //ny
+                        checkingPlayerStats(playerList.get(currentplayer)); // flyttad hit istället
+                    }
                 }
                 rounds++;
                 endRound(rounds);
